@@ -1,0 +1,35 @@
+page-farmer {
+	ion-label[fixed] {
+    -webkit-box-flex: 0;
+    width: 90px;
+    min-width: 90px;
+    max-width: 200px;
+    flex: 0 0 90px;
+	}
+	.item,.ion-row{
+		margin-top: 1rem;
+    	padding-left: 1rem;
+    	padding-right: 1rem;
+    	font-size:1.6rem;
+	}
+	.ion-title{
+		margin-top:0.5rem;
+	}
+	.blank{
+		margin-bottom:3rem;
+	}
+	.segment{
+		fornt-size:1.3rem;
+	}
+	.item textarea{
+		height:10rem;
+	}
+ 	.grid > table{
+	 	width: 100%;
+	    border-collapse: collapse;
+ 	}
+	.grid > table thead > tr >th,.grid > table > tr > td{
+	    text-align: left;
+	    line-height: 5rem;
+	}
+}

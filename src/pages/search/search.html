@@ -1,0 +1,47 @@
+
+<ion-header no-border>
+
+  <ion-navbar hideBackButton color="primary">
+    <ion-buttons left>
+      <button ion-button (click)="goBack()">
+        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>搜索</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="content content-md">
+ 	<ion-searchbar [(ngModel)]="this.settingProvider.keyword" placeholder="请输入关键词" (ionInput)="getItems($event)"></ion-searchbar>
+ 	
+ 	<!--  <ion-refresher (refresh)="doRefresh($event)">
+	    <ion-refresher-content
+	            pullingIcon="arrow-dropdown"
+	            pullingText="下拉刷新"
+	            refreshingSpinner="circles"
+	            refreshingText="刷新中...">
+	    </ion-refresher-content>
+	 </ion-refresher>
+ -->
+  	  <ion-list class="ionlist">
+	    <ion-item class="ion-item" *ngFor="let item of result" (click)="selectItem(item)">
+			<button ion-button item-end *ngIf="homeSearch" (click)="showFarmer(item)">农户信息</button>
+			<button ion-button item-end *ngIf="homeSearch" (click)="showLivestock(item)">牲畜信息</button>
+		    <h2>{{ item.name }} </h2>
+	  	      <p>{{ item.mobile }}</p>
+		      <p>{{ item.cardId }}</p>
+	  	      <p>{{ item.farmAddress }}</p>
+		</ion-item>
+	  </ion-list>
+
+
+	  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+	    <ion-infinite-scroll-content
+	      loadingSpinner="bubbles"
+	      loadingText="正在努力加载中">
+	    </ion-infinite-scroll-content>
+	  </ion-infinite-scroll>
+
+	  
+</ion-content>

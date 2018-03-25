@@ -1,0 +1,20 @@
+page-discovery {
+
+	ion-label[fixed] {
+    -webkit-box-flex: 0;
+    width: 80px;
+    min-width: 80px;
+    max-width: 200px;
+    flex: 0 0 80px;
+	}
+.ionlist{
+		margin-top:20px;
+	}
+	.ion-title{
+		margin-top:0.5rem;
+	}
+
+	.blank{
+		margin-top:10%;
+	}
+}

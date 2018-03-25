@@ -1,0 +1,27 @@
+page-person {
+    .header-image {
+	    width: 100px;
+	    height: 10em;
+	    border-radius: 50%;
+	    margin-top: 10px;
+	    margin-left: auto;
+	    margin-right: auto;
+	    background-size: cover;
+	}
+	.ionlist{
+		margin-top:20px;
+	}
+	.ion-title{
+		margin-top:0.5rem;
+	}
+	.personinfo{
+		border-top: 0rem;border-bottom:0rem;
+		margin-left:4rem;
+	}
+	.personinfo p{
+			line-height:3rem;
+	}
+	.personinfo .passlabel,.personinfo .goout{
+		padding-left:4.2rem;
+	}
+}

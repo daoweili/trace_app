@@ -1,0 +1,42 @@
+<ion-content padding>
+  <div class="blank" ></div>
+
+   <div class="search_logo"></div>
+
+  <ion-grid>
+  	<ion-row>
+  		<ion-col>
+  			<ion-searchbar  placeholder="输入相关词" #keyword></ion-searchbar>
+  		</ion-col>
+  	</ion-row>
+	<ion-row>
+	    <ion-col col-6>
+	      <button class="balanced" ion-button block  (click)="doSearch(keyword)">
+	      	搜索
+	    	</button>
+	    </ion-col>
+	    <ion-col col-6>
+	    	
+	      <ion-item *ngIf="this.settingProvider.user.area.level<5">
+			  <ion-label>区域</ion-label>
+			  <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId" doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>
+			</ion-item>
+	    </ion-col>
+	</ion-row>
+
+	<ion-row style="display: none">
+		<ion-col>
+			那些你曾经搜索过的：
+		</ion-col>
+	</ion-row>
+
+
+	<ion-row style="display: none">
+		<ion-col>
+			休闲鞋
+		</ion-col>
+	</ion-row>
+
+
+  </ion-grid>
+</ion-content>

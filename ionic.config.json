@@ -1,0 +1,14 @@
+{
+  "name": "trace",
+  "app_id": "13b1526d",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  },
+  "proxies": [
+    {
+      "path": "/app",
+      "proxyUrl": "http://47.96.48.160/app"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+page-livestock {
+	ion-label[fixed] {
+    -webkit-box-flex: 0;
+    width: 80px;
+    min-width: 80px;
+    max-width: 200px;
+    flex: 0 0 80px;
+	}
+	.item{
+		margin-top: 1rem;
+    	padding-left: 1rem;
+    	padding-right: 1rem;
+	}
+	.ion-title{
+		margin-top:0.5rem;
+	}
+	.blank{
+		margin-bottom:3rem;
+	}
+
+	.ng-valid[required], .ng-valid.required  {
+	  border-left: 0px solid #42A948; /* green */
+	}
+
+	.ng-invalid:not(form)  {
+	  border-left: 0px solid #a94442; /* red */
+	}
+
+	.item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+	  border-bottom-color: #dedede;
+	  -webkit-box-shadow: inset 0 0 0 0 #cccccc;
+	  box-shadow: inset 0 0 0 0 #cccccc;
+	}
+
+	.list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child {
+	  border-bottom-color: #cccccc;
+	  -webkit-box-shadow: inset 0 0px 0 0 #cccccc;
+	  box-shadow: inset 0 0px 0 0 #cccccc;
+	}
+}

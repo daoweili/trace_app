@@ -1,0 +1,20 @@
+page-certificate {
+	ion-label[fixed] {
+    -webkit-box-flex: 0;
+    width: 80px;
+    min-width: 80px;
+    max-width: 200px;
+    flex: 0 0 80px;
+	}
+	.item{
+		margin-top: 1rem;
+    	padding-left: 1rem;
+    	padding-right: 1rem;
+	}
+	.ion-title{
+		margin-top:0.5rem;
+	}
+	.blank{
+		margin-bottom:3rem;
+	}
+}

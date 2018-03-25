@@ -1,0 +1,53 @@
+
+<ion-header>
+  <ion-navbar #header  color="primary">
+    <ion-title>个人资料</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content  (ionScroll)="scrollEvent($event)">
+  <ion-list class="ionlist">
+    <div ion-item class="personinfo" style="border-top:0px;">
+      <h2>手机号码：{{this.settingProvider.user.mobile}}</h2>
+      <p>行政区域：{{this.settingProvider.user.area.name}}</p>
+      <p *ngIf="this.settingProvider.user.area.level==5">权限角色：乡镇专管员</p>
+      <p *ngIf="this.settingProvider.user.area.level==4">权限角色：县市专管员</p>
+      <p *ngIf="this.settingProvider.user.area.level==3">权限角色：地市专管员</p>
+      <p *ngIf="this.settingProvider.user.area.level==2">权限角色：省份专管员</p>
+      <p *ngIf="this.settingProvider.user.area.level==1">权限角色：国家专管员</p>
+
+    </div>
+
+
+    <button ion-item (click)="doChgName()">
+      <text-avatar text="N" color="rgb(131, 17, 51)" item-left></text-avatar>
+      <h2>姓名</h2>
+      <p>{{this.settingProvider.user.name}}</p>
+    </button>
+
+    <button ion-item  (click)="doChgCertificate()" outline>
+      <text-avatar text="I" color="rgb(77, 186, 255)" item-left></text-avatar>
+      <h2>身份证</h2>
+      <p>{{this.settingProvider.user.cardId}}</p>
+    </button>
+
+    <button ion-item (click)="doChgEmail()">
+      <text-avatar text="E" color="rgb(255, 236, 77)" item-left></text-avatar>
+      <h2>邮箱地址</h2>
+      <p>{{this.settingProvider.user.email}}</p>
+    </button>
+
+    <button ion-item (click)="doChgPassword()">
+      <text-avatar text="R" color="rgb(140, 77, 255)" item-left></text-avatar>
+      <h2>修改密码</h2>
+    </button>
+
+
+    <button ion-item item-end (click)="doOut()">
+      <text-avatar text="Q" color="rgb(162, 255, 77)" item-left></text-avatar>
+      <h2> 注销</h2>
+    </button>
+  </ion-list>
+
+</ion-content>

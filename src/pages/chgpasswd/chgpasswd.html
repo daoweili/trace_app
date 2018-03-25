@@ -1,0 +1,36 @@
+
+<ion-header no-border>
+
+   <ion-navbar hideBackButton color="primary">
+    <ion-buttons left>
+      <button ion-button (click)="goBack()">
+        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>修改密码</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+	<div class="blank"></div>
+    <ion-item class="item">
+      <ion-label fixed>旧密码</ion-label>
+      <ion-input type="password" required placeholder="请输入旧密码" #oldPassword></ion-input>
+    </ion-item>
+    <ion-item class="item">
+      <ion-label fixed>新密码</ion-label>
+      <ion-input type="password" required placeholder="请输入密码" #password></ion-input>
+    </ion-item>
+
+    <ion-item class="item">
+      <ion-label fixed>确认密码</ion-label>
+      <ion-input type="password" required placeholder="请输入确认密码" #confirmPassword></ion-input>
+    </ion-item>
+    <div class="blank"></div>
+  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">
+    <button class="balanced" ion-button block  (click)="changepassword(oldPassword, password,confirmPassword)">
+      确定
+    </button>
+  </div>
+</ion-content>
