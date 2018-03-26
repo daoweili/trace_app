@@ -1131,11 +1131,11 @@ var map = {
 		6
 	],
 	"../pages/livestock/livestock.module": [
-		712,
+		711,
 		5
 	],
 	"../pages/login/login.module": [
-		711,
+		712,
 		4
 	],
 	"../pages/map/map.module": [
@@ -1338,7 +1338,6 @@ var ScanPage = (function () {
         this.camera = camera;
         this.backButtonService = backButtonService;
         this.platform = platform;
-        this.isScan = false;
         platform.ready().then(function () {
             _this.backButtonService.registerBackButtonAction(_this.tabRef);
         });
@@ -1364,7 +1363,10 @@ var ScanPage = (function () {
                 _this.settingProvider.scanResult = d;
                 _this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__discovery_discovery__["a" /* DiscoveryPage */]);
             }
-            else {
+            else if (d.code == 9998) {
+                _this.settingProvider.presentAlert(d.msg, "");
+            }
+            else if (d.code == 9999) {
                 _this.settingProvider.presentAlert(d.msg, "");
             }
         }, function (err) {
@@ -1595,8 +1597,8 @@ var AppModule = (function () {
                         { loadChildren: '../pages/discovery/discovery.module#DiscoveryPageModule', name: 'DiscoveryPage', segment: 'discovery', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/email/email.module#EmailPageModule', name: 'EmailPage', segment: 'email', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/farmer/farmer.module#FarmerPageModule', name: 'FarmerPage', segment: 'farmer', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/livestock/livestock.module#LivestockPageModule', name: 'LivestockPage', segment: 'livestock', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/map/map.module#MapPageModule', name: 'MapPage', segment: 'map', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/search/search.module#SearchPageModule', name: 'SearchPage', segment: 'search', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/stats/stats.module#StatsPageModule', name: 'StatsPage', segment: 'stats', priority: 'low', defaultHistory: [] },
@@ -2163,7 +2165,7 @@ var FarmerPage = (function () {
         this.farmerProvider.getStatsFarmer("areaId=" + this.settingProvider.user.areaId + "&farmId=" + farmId).subscribe(function (res) {
             if (res["code"] == 10000) {
                 _this.statser = res["data"];
-                _this.count = _this.statser.details.length;
+                _this.count = _this.statser["details"].length;
             }
             else {
                 _this.settingProvider.presentAlert(res["msg"], "");
@@ -2221,16 +2223,15 @@ var FarmerPage = (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
-        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"]) === "function" && _a || Object)
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
     ], FarmerPage.prototype, "tabRef", void 0);
     FarmerPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'page-farmer',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/farmer/farmer.html"*/'<!--\n  Generated template for the CertificatePage page.\n  建议使用定位功能，可以让他人更容易找到你\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n<ion-header no-border>\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons  *ngIf="toPage==false" left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title *ngIf="infoType==false">农户信息</ion-title>\n    <ion-title *ngIf="infoType">牲畜信息</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n    <div  *ngIf="toPage">\n\n        <div class="blank"></div>\n        <ion-list>\n          <ion-item class="item" style="border-top:0px;">\n            <ion-label fixed> * 名字</ion-label>\n            <ion-input type="text" [(ngModel)]="farmer.name" ngModel valid  required placeholder="请输入名字"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 手机号码</ion-label>\n            <ion-input type="tel" [(ngModel)]="farmer.mobile" ngModel valid  required placeholder="请输入手机号码"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 行政区域</ion-label>\n            <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId"  doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 身份证号码</ion-label>\n            <ion-input type="text" required [(ngModel)]="farmer.cardId" ngModel valid  placeholder="请输入身份证号码"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 养殖地址</ion-label>\n            <ion-textarea [(ngModel)]="farmer.farmAddress" required ngModel valid  placeholder="请输入养殖地址"></ion-textarea>\n            <button ion-button  item-end block style="width: 40px;display: none" (click)="location()">定位</button>\n          </ion-item>\n        </ion-list>\n        <div class="blank"></div>\n      	<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n        <button class="balanced" ion-button block   (click)="doAdd()" >\n           新增\n        </button>\n      </div>\n    </div>\n\n    <div *ngIf="toPage==false">\n\n               <ion-grid padding *ngIf="infoType==false">\n                  <ion-row class="ion-row">\n                    <ion-col col-4>名字 : </ion-col>\n                    <ion-col col-8>{{farmer.name}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>手机号码 : </ion-col>\n                    <ion-col col-8>{{farmer.mobile}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>身份证号码 : </ion-col>\n                    <ion-col col-8>{{farmer.cardId}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>养殖地址 : </ion-col>\n                    <ion-col col-8>{{farmer.farmAddress}}</ion-col>\n                  </ion-row>\n\n              </ion-grid>\n\n\n             \n              <ion-list *ngIf="infoType==true">\n                <div *ngIf="count>0">\n                <ion-item>\n                  <ion-grid *ngIf="statser.details.length>0"  padding>\n                   <table class="table">\n                      <thead>\n                      <tr>\n                      <th>种类</th>\n                      <th>性别</th>\n                      <th>数量</th>\n                      </tr>\n                      </thead>\n                      <tbody>\n                      <tr *ngFor="let nc of statser.details">\n                      <td>{{nc.typeStr}} </td>\n                      <td><code>{{ nc.sexStr }}</code></td>\n                      <td><code>{{ nc.count }}</code></td>\n                      </tr>\n                      </tbody>\n                    </table>\n                  </ion-grid>\n                </ion-item>\n                </div>\n                <ion-item *ngIf="count==0">\n                <div>没有牲畜信息</div>\n                </ion-item>\n              </ion-list>\n\n            <div class="blank"></div>\n\n    </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/farmer/farmer.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__providers_farmer_farmer__["a" /* FarmerProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_farmer_farmer__["a" /* FarmerProvider */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"]) === "function" && _j || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_4__providers_farmer_farmer__["a" /* FarmerProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"]])
     ], FarmerPage);
     return FarmerPage;
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 }());
 
 //# sourceMappingURL=farmer.js.map
