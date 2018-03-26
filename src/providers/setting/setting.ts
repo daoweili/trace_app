@@ -24,7 +24,7 @@ export class SettingProvider {
    /*行政列表*/
    cityColumns: any[];
    /*服务器通讯地址*/
-   apiUrl :string ="http://localhost:8100/app";
+   apiUrl :string ="http://47.96.48.160/app";
    /*根据行政区域存储防疫类型*/
    epidemicPrevention :Object;
    keyword :string ="";

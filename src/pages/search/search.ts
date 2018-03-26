@@ -40,8 +40,8 @@ export class SearchPage {
         }
         this.settingProvider.keyword = navParams.data.keyword;
         this.farmerProvider.farmerSearch(this.settingProvider.keyword).subscribe((res) => {
-          console.log("farmer" ,res["data"][0]["list"]);
-          this.result = res["data"][0]["list"];
+          console.log("farmer" ,res["data"]["list"]);
+          this.result = res["data"]["list"];
           console.log("result",this.result);
         }, (err) => {
          this.settingProvider.dismissLoading();
@@ -76,8 +76,8 @@ export class SearchPage {
           console.log("ev","用户加入文本"+ev.target.value);
           this.settingProvider.keyword = ev.target.value;
           this.farmerProvider.farmerSearch(this.settingProvider.keyword).subscribe((res) => {
-            console.log("farmer" ,res["data"][0]["list"]);
-            this.result = res["data"][0]["list"];
+            console.log("farmer" ,res["data"]["list"]);
+            this.result = res["data"]["list"];
             console.log("result",this.result);
           }, (err) => {
            this.settingProvider.dismissLoading();
@@ -103,13 +103,13 @@ export class SearchPage {
           this.page = this.page + 1;
           this.farmerProvider.farmerSearch(this.settingProvider.keyword,this.page).subscribe((res) => {
             if(res["code"]==10000){
-                let row:any[] = res["data"][0]["list"];
+                let row:any[] = res["data"]["list"];
                 console.log("farmer" ,row.length);
                 for (var i = row.length - 1; i >= 0; i--) {
                    console.log(row[i]);
                    this.result.push(row[i]);
                  } 
-                this.total = res["data"][0]["total"];
+                this.total = res["data"]["total"];
                 console.log("total",this.total);
                 infiniteScroll.complete();
               }else{

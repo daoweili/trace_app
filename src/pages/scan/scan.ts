@@ -12,8 +12,6 @@ import { DiscoveryPage } from '../discovery/discovery';
 })
 export class ScanPage {
   @ViewChild('myTabs') tabRef: Tabs;
-
-  isScan:boolean = false;
   constructor(public navCtrl: NavController,public appCtrl:App,public settingProvider:SettingProvider,private camera:Camera,private backButtonService:BackButtonService,private platform:Platform) {
       platform.ready().then(() => {
         this.backButtonService.registerBackButtonAction(this.tabRef);
@@ -43,7 +41,9 @@ export class ScanPage {
        if(d.code == 10000){
           this.settingProvider.scanResult = d;
           this.appCtrl.getRootNav().push(DiscoveryPage);
-       }else{
+       }else if (d.code == 9998){
+          this.settingProvider.presentAlert(d.msg,"");
+       } else if(d.code == 9999){
           this.settingProvider.presentAlert(d.msg,"");
        }
     }, (err) => {
@@ -53,13 +53,29 @@ export class ScanPage {
 
 
   doScan1(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
      let c:string = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
      let d:any = JSON.parse(c);
-     if(d.code == 10000){
-        this.settingProvider.scanResult = d;
-        this.appCtrl.getRootNav().push(DiscoveryPage);
-     }else{
-        this.settingProvider.presentAlert(d.msg,"");
-     }
+     
+     this.camera.getPicture(options).then((res) => {
+       /*json转数组*/
+       let c:string = res;
+       let d:any = JSON.parse(c);
+       if(d.code == 10000){
+          this.settingProvider.scanResult = d;
+          this.appCtrl.getRootNav().push(DiscoveryPage);
+       }else if (d.code == 9998){
+          this.settingProvider.presentAlert(d.msg,"");
+       } else if(d.code == 9999){
+          this.settingProvider.presentAlert(d.msg,"");
+       }
+    }, (err) => {
+      
+    });
   }
 }

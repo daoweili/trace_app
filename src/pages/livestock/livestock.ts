@@ -39,12 +39,15 @@ export class LivestockPage {
       if( navParams.data.type =="scan" ){
           this.settingProvider.ltock.code = navParams.data.item;
           this.livestockProvider.doSearchLivestock(this.settingProvider.ltock.code).subscribe((res) => {
-            let stock = res["data"][0];
-            if(stock == null){
+            let stock = res["data"];
+            console.log(stock.length);
+            if(stock.length == 0){
+              console.log(1);
                 this.settingProvider.ltock.farmer = null;
                 this.clearLtock();
                 this.settingProvider.ltockinsert = true;
             }else{
+              console.log(2);
                 console.log("牲畜查询",stock,this.settingProvider.ltock.farmer.name);
                 this.settingProvider.ltock = stock;
                 this.settingProvider.ltockinsert = false;
@@ -180,8 +183,8 @@ export class LivestockPage {
           msgbox.dismiss();
           this.isScan == false;
           if ( d.data.length > 0){
-            //alert(d.data[0]);
-            this.settingProvider.ltock.insureId = d.data[0];
+            //alert(d.data);
+            this.settingProvider.ltock.insureId = d.data;
           } else{
             this.settingProvider.presentAlert(d.msg,"扫描不到任何信息");
           }

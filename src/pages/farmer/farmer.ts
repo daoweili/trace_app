@@ -73,8 +73,8 @@ export class FarmerPage {
           (res) => {
                 if(res["code"] == 10000){
                   this.statser = res["data"];
-                  this.count=this.statser[0].details.length;
-                  console.log("statser",this.statser,this.statser[0].details.length);
+                  this.count=this.statser["details"].length;
+                  
                 }else{
                   this.settingProvider.presentAlert(res["msg"],"");
                 }

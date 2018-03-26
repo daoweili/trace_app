@@ -22,7 +22,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { MTabsPage } from '../pages/tabs/mtabs';
 import { MapPage } from '../pages/map/map';
 
-
+import { StatsPage } from '../pages/stats/stats';
 import { LoginPage } from '../pages/login/login';
 import { ChgpasswdPage } from '../pages/chgpasswd/chgpasswd';
 import { EmailPage } from '../pages/email/email';
@@ -50,7 +50,7 @@ import { LivestockProvider } from '../providers/livestock/livestock';
     ChgpasswdPage,TruenamePage,MapPage,
     CertificatePage,
     EmailPage,FarmerPage,DiscoveryPage,
-    SearchPage,LivestockPage,
+    SearchPage,LivestockPage,StatsPage,
     TextAvatarDirective,ValidDirective
   ],
   imports: [
@@ -74,7 +74,7 @@ import { LivestockProvider } from '../providers/livestock/livestock';
     EmailPage,
     FarmerPage,
     SearchPage,
-    LivestockPage,
+    LivestockPage,StatsPage,
     PersonPage,TruenamePage,MapPage,
     HomePage,
     LoginPage,

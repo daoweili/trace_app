@@ -1,6 +1,6 @@
 <!--
   Generated template for the CertificatePage page.
-
+  建议使用定位功能，可以让他人更容易找到你
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
@@ -41,7 +41,7 @@
           </ion-item>
           <ion-item class="item">
             <ion-label fixed> * 养殖地址</ion-label>
-            <ion-textarea [(ngModel)]="farmer.farmAddress" required ngModel valid  placeholder="建议使用定位功能，可以让他人更容易找到你"></ion-textarea>
+            <ion-textarea [(ngModel)]="farmer.farmAddress" required ngModel valid  placeholder="请输入养殖地址"></ion-textarea>
             <button ion-button  item-end block style="width: 40px;display: none" (click)="location()">定位</button>
           </ion-item>
         </ion-list>
@@ -82,8 +82,8 @@
              
               <ion-list *ngIf="infoType==true">
                 <div *ngIf="count>0">
-                <ion-item *ngFor="let sitem of statser" >
-                  <ion-grid *ngIf="statser.length>0 && sitem.farmerName"  padding>
+                <ion-item>
+                  <ion-grid *ngIf="statser.details.length>0"  padding>
                    <table class="table">
                       <thead>
                       <tr>
@@ -93,7 +93,7 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let nc of sitem.details">
+                      <tr *ngFor="let nc of statser.details">
                       <td>{{nc.typeStr}} </td>
                       <td><code>{{ nc.sexStr }}</code></td>
                       <td><code>{{ nc.count }}</code></td>

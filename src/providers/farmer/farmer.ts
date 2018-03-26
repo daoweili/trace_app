@@ -30,4 +30,8 @@ export class FarmerProvider {
     return this.http.get(this.settingProvider.apiUrl+"/specialManager/livestock/group?"+param,this.settingProvider.httpOptions);
    }
 
+   /* 区域中农户的统计*/
+   getStatsAreaFarmer(param:string){
+    return this.http.get(this.settingProvider.apiUrl+"/specialManager/farmer/count?"+param,this.settingProvider.httpOptions);
+   }
 }

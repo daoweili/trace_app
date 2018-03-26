@@ -22,7 +22,7 @@ export class HomePage {
     if((this.settingProvider.user as any).areaId > 0 ){
         this.settingProvider.getEpidemicPrevention((this.settingProvider.user as any).areaId).subscribe((res) => {
           if(res["code"] == 10000){
-               this.settingProvider.epidemicPrevention = res["data"][0];
+               this.settingProvider.epidemicPrevention = res["data"];
            }
         }, (err) => {
          console.log(err);

@@ -18,7 +18,7 @@ import { BackButtonService } from '../../services/backButton';
  *带逗号字符 转 数组
  *let b:string = "E20094C6A0B48148F33C3E05,E2000016880401580370EC8A";
  *let a:any = Array(b.split(','));
- *console.log(a[0][1]);
+ *console.log(a[1]);
  *json转数组
  *let c:string= "{\"code\":1000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
  *let d:any = JSON.parse(c);
@@ -61,14 +61,14 @@ export class LoginPage {
     } else {
         this.specialProvider.doLogin(this.username,this.password).subscribe((res) => {
           if(res["code"] == 10000){
-               this.storage.set("user",res["data"][0]);
+               this.storage.set("user",res["data"]);
                if(this.remember){
                   this.storage.set("remember",{"mobile":this.username,"password":this.password});
                }else{
                   this.storage.set("remember",{"mobile":"","password":""});
                }
-               this.settingProvider.user = res["data"][0];
-               this.settingProvider.cityColumns = res["data"][0]["areaResult"];
+               this.settingProvider.user = res["data"];
+               this.settingProvider.cityColumns = res["data"]["areaResult"];
                if(this.settingProvider.user.area.level < 5 ){
                   this.navCtrl.push(MTabsPage);
                }else{

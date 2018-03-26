@@ -55,7 +55,7 @@
     <ion-item class="item">
       <ion-label fixed>防疫状况</ion-label>
       <ion-select  multiple="true"  [(ngModel)]="this.settingProvider.ltock.epidemicIds"  okText="确定" cancelText="取消">
-	    <ion-option *ngFor="let item of this.settingProvider.epidemicPrevention" value="{{item.areaId}}">{{item.name}}</ion-option>
+	    <ion-option *ngFor="let item of this.settingProvider.epidemicPrevention" value="{{item.id}}">{{item.name}}</ion-option>
 	    
 	  </ion-select>
     </ion-item>
