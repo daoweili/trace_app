@@ -151,7 +151,7 @@ var SettingProvider = (function () {
         /* 是否已经登录 */
         this.loginstate = false;
         /*服务器通讯地址*/
-        this.apiUrl = "http://47.96.48.160/app";
+        this.apiUrl = "http://localhost:8100/app";
         this.keyword = "";
         /*扫描结果*/
         this.scanResult = "";
@@ -181,7 +181,7 @@ var SettingProvider = (function () {
             epidemicProduct: '',
             epidemicBatch: '',
             healthy: 1,
-            insureState: 1,
+            insureState: 2,
             type: "1",
             insureId: "1",
             farmer: "",
@@ -236,9 +236,10 @@ var SettingProvider = (function () {
     };
     SettingProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["AlertController"], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["LoadingController"]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["AlertController"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["AlertController"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["LoadingController"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["LoadingController"]) === "function" && _c || Object])
     ], SettingProvider);
     return SettingProvider;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=setting.js.map
@@ -969,16 +970,40 @@ var StatsPage = (function () {
         platform.ready().then(function () {
             _this.backButtonService.registerBackButtonAction(_this.tabRef);
         });
-        this.getFarmerStats();
     }
+    StatsPage.prototype.ionViewWillEnter = function () {
+        var _this = this;
+        new Promise(function (fulfill, reject) {
+            _this.getFarmerAreaStats();
+            _this.getFarmerStats();
+            try {
+                fulfill("success");
+            }
+            catch (error) {
+                reject("fail");
+            }
+        });
+    };
     StatsPage.prototype.getFarmerStats = function () {
         var _this = this;
         this.farmerProvider.getStatsFarmer("areaId=" + this.settingProvider.user.areaId).subscribe(function (res) {
             if (res["code"] == 10000) {
-                console.log(res);
+                _this.statser = res["data"]["details"];
             }
             else {
                 _this.settingProvider.presentAlert(res["msg"], "");
+            }
+        }, function (err) {
+            _this.settingProvider.dismissLoading();
+            _this.settingProvider.presentAlert("貌似网络出了点小差～", '');
+        });
+    };
+    StatsPage.prototype.getFarmerAreaStats = function () {
+        var _this = this;
+        this.farmerProvider.getStatsAreaFarmer("areaId=" + this.settingProvider.user.areaId).subscribe(function (res) {
+            if (res["code"] == 10000) {
+                _this.area = res["data"];
+                console.log(_this.area);
             }
         }, function (err) {
             _this.settingProvider.dismissLoading();
@@ -995,7 +1020,7 @@ var StatsPage = (function () {
     ], StatsPage.prototype, "tabRef", void 0);
     StatsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-stats',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/stats/stats.html"*/'<!--\n  Generated template for the StatsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>信息统计</ion-title>\n  </ion-navbar>\n\n\n</ion-header>\n\n\n<ion-content padding>\n <ion-list>\n\n    <ion-list-header>\n      农户统计数据\n      <ion-icon item-end name="md-stats" color="primary"></ion-icon>\n    </ion-list-header>\n\n    <ion-item>\n      Affection\n      <ion-note item-end>\n        Very Little\n      </ion-note>\n    </ion-item>\n\n\n\n    <div class="blank"></div>\n\n    <ion-list-header>\n      牲畜统计数据\n      <ion-icon item-end name="md-stats" color="primary"></ion-icon>\n    </ion-list-header>\n\n\n    <ion-item>\n      Affection\n      <ion-note item-end>\n        Very Little\n      </ion-note>\n    </ion-item>\n\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/stats/stats.html"*/,
+            selector: 'page-stats',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/stats/stats.html"*/'<!--\n  Generated template for the StatsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>信息统计</ion-title>\n  </ion-navbar>\n\n\n</ion-header>\n\n\n<ion-content padding>\n <ion-list>\n\n    <ion-list-header>\n      农户统计数据\n      <ion-icon item-end name="md-stats" color="primary"></ion-icon>\n    </ion-list-header>\n\n    <ion-item>\n      农户数\n      <ion-note item-end>\n        {{area}}\n      </ion-note>\n    </ion-item>\n\n\n\n    <div class="blank"></div>\n\n    <ion-list-header>\n      牲畜统计数据\n      <ion-icon item-end name="md-stats" color="primary"></ion-icon>\n    </ion-list-header>\n\n    <ion-item *ngFor="let nc of statser">\n      {{nc.typeStr}}\n      <ion-note style="padding-left: 41%;">\n       {{ nc.sexStr }}\n      </ion-note>\n      <ion-note item-end>\n       {{ nc.count }}\n      </ion-note>\n    </ion-item>\n\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/stats/stats.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_4__providers_farmer_farmer__["a" /* FarmerProvider */]])
     ], StatsPage);
@@ -1373,13 +1398,16 @@ var ScanPage = (function () {
         });
     };
     ScanPage.prototype.doScan1 = function () {
-        var c = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
+        var c = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2100016880401580370E48A\",\" E2000016880401580370E48A\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
         var d = JSON.parse(c);
         if (d.code == 10000) {
             this.settingProvider.scanResult = d;
             this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__discovery_discovery__["a" /* DiscoveryPage */]);
         }
-        else {
+        else if (d.code == 9998) {
+            this.settingProvider.presentAlert(d.msg, "");
+        }
+        else if (d.code == 9999) {
             this.settingProvider.presentAlert(d.msg, "");
         }
     };
@@ -1901,12 +1929,15 @@ var LivestockPage = (function () {
             this.settingProvider.ltock.code = navParams.data.item;
             this.livestockProvider.doSearchLivestock(this.settingProvider.ltock.code).subscribe(function (res) {
                 var stock = res["data"];
-                if (stock == null) {
+                console.log(stock.length);
+                if (stock.length == 0) {
+                    console.log(1);
                     _this.settingProvider.ltock.farmer = null;
                     _this.clearLtock();
                     _this.settingProvider.ltockinsert = true;
                 }
                 else {
+                    console.log(2);
                     console.log("牲畜查询", stock, _this.settingProvider.ltock.farmer.name);
                     _this.settingProvider.ltock = stock;
                     _this.settingProvider.ltockinsert = false;
@@ -1937,7 +1968,7 @@ var LivestockPage = (function () {
             epidemicProduct: '',
             epidemicBatch: '',
             healthy: 1,
-            insureState: 1,
+            insureState: 2,
             type: "1",
             insureId: "",
             accidentDead: "1", sex: "1",
@@ -2064,7 +2095,7 @@ var LivestockPage = (function () {
     ], LivestockPage.prototype, "tabRef", void 0);
     LivestockPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-livestock',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/livestock/livestock.html"*/'<!--\n  Generated template for the CertificatePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>牲畜信息</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n    <ion-list>\n\n    <ion-item class="item">\n      <ion-label fixed> * 牲畜编号</ion-label>\n      <ion-input type="text" required placeholder="请输入牲畜编号" [(ngModel)]="this.settingProvider.ltock.code" readonly="true"  ></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 农户</ion-label>\n\n      <ion-input type="text" (ionFocus)="doSearch()" readonly="true" required placeholder="按农户名称或者4位身份证尾数搜索" [(ngModel)]="this.settingProvider.ltock.farmer.name"></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 行政区域</ion-label>\n      <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId" doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 母体来源</ion-label>\n      <ion-input type="tel" required placeholder="请输入母体来源" [(ngModel)]="this.settingProvider.ltock.motherAddress" ></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed>* 出生时间</ion-label>\n      <ion-datetime displayFormat="YYYY-MM-DD" doneText="确定" cancelText="取消" [(ngModel)]="this.settingProvider.ltock.slaughterDate"></ion-datetime>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 性别</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.sex" okText="确定" cancelText="取消">\n      <ion-option value="1">公</ion-option>\n      <ion-option value="2">母</ion-option>\n    </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>防疫状况</ion-label>\n      <ion-select  multiple="true"  [(ngModel)]="this.settingProvider.ltock.epidemicIds"  okText="确定" cancelText="取消">\n	    <ion-option *ngFor="let item of this.settingProvider.epidemicPrevention" value="{{item.id}}">{{item.name}}</ion-option>\n	    \n	  </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 健康状态</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.healthy" okText="确定" cancelText="取消">\n	    <ion-option value="0">良好</ion-option>\n	    <ion-option value="1">合格</ion-option>\n	    <ion-option value="2">不合格</ion-option>\n	  </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 种类</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.type" okText="确定" cancelText="取消">\n	    <ion-option value="1">猪</ion-option>\n	    <ion-option value="2">牛</ion-option>\n	    <ion-option value="3">羊</ion-option>\n	  </ion-select>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  意外死亡</ion-label>\n      <ion-select name="accidentDead" [(ngModel)]="this.settingProvider.ltock.accidentDead" okText="确定" cancelText="取消">\n	    <ion-option value="1">是</ion-option>\n	    <ion-option value="">否</ion-option>\n	  </ion-select>\n    </ion-item>\n\n\n\n    <ion-item class="item" style="display: none">\n      <ion-label fixed>  投保情况</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.insureState" okText="确定" cancelText="取消">\n      <ion-option value="1">投保</ion-option>\n      <ion-option value="2">未投保</ion-option>\n    </ion-select>\n    </ion-item>\n\n\n    <ion-item class="item" style="display: none" *ngIf="this.settingProvider.ltock.insureState==\'1\'">\n      <ion-label fixed>  投保编号</ion-label>\n      <ion-input type="tel" placeholder="请输入投保编号" readonly="true"  (ionFocus)="doScan()" [(ngModel)]="this.settingProvider.ltock.insureId" ></ion-input>\n      <ion-icon item-end (click)="doScan()" name="qr-scanner"></ion-icon>\n    </ion-item>\n\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>  宰现地点</ion-label>\n          <ion-textarea name="slaughterAddress" placeholder="请输入宰现地点" [(ngModel)]="this.settingProvider.ltock.slaughterAddress"  placeholder=""></ion-textarea>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> 宰现情况</ion-label>\n          <ion-textarea name="slaughterRemark" placeholder="请输入宰现情况" [(ngModel)]="this.settingProvider.ltock.slaughterRemark" placeholder=""></ion-textarea>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>  买卖流向</ion-label>\n          <ion-textarea name="saleFlow" placeholder="请输入买卖流向" [(ngModel)]="this.settingProvider.ltock.saleFlow" placeholder=""></ion-textarea>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  防疫类型</ion-label>\n          <ion-textarea style="height:10rem;" placeholder="请输入防疫类型" name="epidemicType" [(ngModel)]="this.settingProvider.ltock.epidemicType"  placeholder="逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>  防疫供应商</ion-label>\n          <ion-textarea style="height:10rem;"  name="epidemicProduct" [(ngModel)]="this.settingProvider.ltock.epidemicProduct"  placeholder="请输入防疫供应商，以逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  生产批次</ion-label>\n          <ion-textarea style="height:10rem;" name="epidemicBatch" [(ngModel)]="this.settingProvider.ltock.epidemicBatch"  placeholder="请输入生产批次，以逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n    <div class="blank"></div>\n  	<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button  *ngIf="this.settingProvider.ltockinsert" class="balanced" (click)="doAdd()" ion-button block >\n       保存\n    </button>\n    <button  *ngIf="!this.settingProvider.ltockinsert" class="balanced" (click)="doEdit()" ion-button block >\n       更新\n    </button>\n    <button class="balanced" (click)="clearLtock()" ion-button block>\n      重置\n    </button>\n  </div>\n    </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/livestock/livestock.html"*/,
+            selector: 'page-livestock',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/livestock/livestock.html"*/'<!--\n  Generated template for the CertificatePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>牲畜信息</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n    <ion-list>\n\n    <ion-item class="item">\n      <ion-label fixed> * 牲畜编号</ion-label>\n      <ion-input type="text" required placeholder="请输入牲畜编号" [(ngModel)]="this.settingProvider.ltock.code" readonly="true"  ></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 农户</ion-label>\n\n      <ion-input type="text" (ionFocus)="doSearch()" readonly="true" required placeholder="按农户名称或者4位身份证尾数搜索" [(ngModel)]="this.settingProvider.ltock.farmer.name"></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 行政区域</ion-label>\n      <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId" doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 母体来源</ion-label>\n      <ion-input type="tel" required placeholder="请输入母体来源" [(ngModel)]="this.settingProvider.ltock.motherAddress" ></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed>* 出生时间</ion-label>\n      <ion-datetime displayFormat="YYYY-MM-DD" doneText="确定" cancelText="取消" [(ngModel)]="this.settingProvider.ltock.slaughterDate"></ion-datetime>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 性别</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.sex" okText="确定" cancelText="取消">\n      <ion-option value="1">公</ion-option>\n      <ion-option value="2">母</ion-option>\n    </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>防疫状况</ion-label>\n      <ion-select  multiple="true"  [(ngModel)]="this.settingProvider.ltock.epidemicIds"  okText="确定" cancelText="取消">\n	    <ion-option *ngFor="let item of this.settingProvider.epidemicPrevention" value="{{item.id}}">{{item.name}}</ion-option>\n	    \n	  </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 健康状态</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.healthy" okText="确定" cancelText="取消">\n	    <ion-option value="0">良好</ion-option>\n	    <ion-option value="1">合格</ion-option>\n	    <ion-option value="2">不合格</ion-option>\n	  </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 种类</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.type" okText="确定" cancelText="取消">\n	    <ion-option value="1">猪</ion-option>\n	    <ion-option value="2">牛</ion-option>\n	    <ion-option value="3">羊</ion-option>\n	  </ion-select>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  意外死亡</ion-label>\n      <ion-select name="accidentDead" [(ngModel)]="this.settingProvider.ltock.accidentDead" okText="确定" cancelText="取消">\n	    <ion-option value="1">是</ion-option>\n	    <ion-option value="">否</ion-option>\n	  </ion-select>\n    </ion-item>\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>  投保情况</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.insureState" okText="确定" cancelText="取消">\n      <ion-option value="1">投保</ion-option>\n      <ion-option value="2">未投保</ion-option>\n    </ion-select>\n    </ion-item>\n\n\n    <ion-item class="item"  *ngIf="this.settingProvider.ltock.insureState==\'1\'">\n      <ion-label fixed>  投保编号</ion-label>\n      <ion-input type="tel" placeholder="请输入投保编号" readonly="true"  (ionFocus)="doScan()" [(ngModel)]="this.settingProvider.ltock.insureId" ></ion-input>\n      <ion-icon item-end (click)="doScan()" name="qr-scanner"></ion-icon>\n    </ion-item>\n\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>  宰现地点</ion-label>\n          <ion-textarea name="slaughterAddress" placeholder="请输入宰现地点" [(ngModel)]="this.settingProvider.ltock.slaughterAddress"  placeholder=""></ion-textarea>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> 宰现情况</ion-label>\n          <ion-textarea name="slaughterRemark" placeholder="请输入宰现情况" [(ngModel)]="this.settingProvider.ltock.slaughterRemark" placeholder=""></ion-textarea>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>  买卖流向</ion-label>\n          <ion-textarea name="saleFlow" placeholder="请输入买卖流向" [(ngModel)]="this.settingProvider.ltock.saleFlow" placeholder=""></ion-textarea>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  防疫类型</ion-label>\n          <ion-textarea style="height:10rem;" placeholder="请输入防疫类型" name="epidemicType" [(ngModel)]="this.settingProvider.ltock.epidemicType"  placeholder="逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>  防疫供应商</ion-label>\n          <ion-textarea style="height:10rem;"  name="epidemicProduct" [(ngModel)]="this.settingProvider.ltock.epidemicProduct"  placeholder="请输入防疫供应商，以逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  生产批次</ion-label>\n          <ion-textarea style="height:10rem;" name="epidemicBatch" [(ngModel)]="this.settingProvider.ltock.epidemicBatch"  placeholder="请输入生产批次，以逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n    <div class="blank"></div>\n  	<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button  *ngIf="this.settingProvider.ltockinsert" class="balanced" (click)="doAdd()" ion-button block >\n       保存\n    </button>\n    <button  *ngIf="!this.settingProvider.ltockinsert" class="balanced" (click)="doEdit()" ion-button block >\n       更新\n    </button>\n    <button class="balanced" (click)="clearLtock()" ion-button block>\n      重置\n    </button>\n  </div>\n    </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/livestock/livestock.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_4__providers_livestock_livestock__["a" /* LivestockProvider */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_6__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"]])
     ], LivestockPage);
@@ -2462,8 +2493,9 @@ var MyHttpInterceptor = (function () {
         var ok;
         var pattern = new RegExp('specialManager/epidemicPrevention/queryByArea/[0-9]+$', 'ig');
         var patternheartbeat = new RegExp('heartbeat/special_manager', 'ig');
+        var patterncount = new RegExp('specialManager/farmer/count?areaId=[0-9]+$', 'ig');
         if (req instanceof __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["e" /* HttpRequest */]) {
-            if (pattern.test(req.url) == false && patternheartbeat.test(req.url) == false) {
+            if (pattern.test(req.url) == false && patternheartbeat.test(req.url) == false && patterncount.test(req.url) == false) {
                 console.log("弹出，请求中，请等待...");
                 this.settingProvider.presentLoading();
                 this.settingProvider.loading.present();
@@ -2475,7 +2507,7 @@ var MyHttpInterceptor = (function () {
                     _this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__pages_login_login__["a" /* LoginPage */]);
                     console.log("go to login");
                 }
-                if (event.url, pattern.test(event.url) == false && patternheartbeat.test(req.url) == false && _this.settingProvider.loading != null) {
+                if (event.url, pattern.test(event.url) == false && patternheartbeat.test(req.url) == false && _this.settingProvider.loading != null && patterncount.test(req.url) == false) {
                     _this.settingProvider.dismissLoading();
                     _this.settingProvider.loading = null;
                     console.log("消失，请求中，请等待...");
@@ -2638,6 +2670,19 @@ var SearchPage = (function () {
             console.log("你离开了页面");
         }
     };
+    SearchPage.prototype.doSearch = function () {
+        var _this = this;
+        if (this.settingProvider.keyword != "") {
+            this.farmerProvider.farmerSearch(this.settingProvider.keyword).subscribe(function (res) {
+                console.log("farmer", res["data"]["list"]);
+                _this.result = res["data"]["list"];
+                console.log("result", _this.result);
+            }, function (err) {
+                _this.settingProvider.dismissLoading();
+                _this.settingProvider.presentAlert("貌似网络出了点小差～", '');
+            });
+        }
+    };
     SearchPage.prototype.getItems = function (ev) {
         var _this = this;
         if (ev.inputType == "insertText" || ev.inputType == "deleteContentBackward" || ev.inputType == "deleteByCut" || ev.inputType == "insertFromPaste")
@@ -2708,7 +2753,7 @@ var SearchPage = (function () {
     ], SearchPage.prototype, "tabRef", void 0);
     SearchPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-search',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/search/search.html"*/'\n<ion-header no-border>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>搜索</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="content content-md">\n 	<ion-searchbar [(ngModel)]="this.settingProvider.keyword" placeholder="按农户名称或者4位身份证尾数搜索" (ionInput)="getItems($event)"></ion-searchbar>\n 	\n 	<!--  <ion-refresher (refresh)="doRefresh($event)">\n	    <ion-refresher-content\n	            pullingIcon="arrow-dropdown"\n	            pullingText="下拉刷新"\n	            refreshingSpinner="circles"\n	            refreshingText="刷新中...">\n	    </ion-refresher-content>\n	 </ion-refresher>\n -->\n  	  <ion-list class="ionlist">\n	    <ion-item class="ion-item" *ngFor="let item of result" (click)="selectItem(item)">\n			<button ion-button item-end *ngIf="homeSearch" (click)="showFarmer(item)">农户信息</button>\n			<button ion-button item-end *ngIf="homeSearch" (click)="showLivestock(item)">牲畜信息</button>\n		    <h2>{{ item.name }} </h2>\n	  	      <p>{{ item.mobile }}</p>\n		      <p>{{ item.cardId }}</p>\n	  	      <p>{{ item.farmAddress }}</p>\n		</ion-item>\n	  </ion-list>\n\n\n	  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">\n	    <ion-infinite-scroll-content\n	      loadingSpinner="bubbles"\n	      loadingText="正在努力加载中">\n	    </ion-infinite-scroll-content>\n	  </ion-infinite-scroll>\n\n	  \n</ion-content>'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/search/search.html"*/,
+            selector: 'page-search',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/search/search.html"*/'\n<ion-header no-border>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>搜索</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="content content-md">\n 	<ion-searchbar [(ngModel)]="this.settingProvider.keyword" placeholder="农户名称、4位身份证尾数"></ion-searchbar>\n 	<button class="balanced" style="width: 100px;position: absolute;right: 0;top: 2px;z-index: 99999;height: 50px;" ion-button block  (click)="doSearch()">\n	      	搜索\n	</button>\n 	\n 	<!--  <ion-refresher (refresh)="doRefresh($event)">\n	    <ion-refresher-content\n	            pullingIcon="arrow-dropdown"\n	            pullingText="下拉刷新"\n	            refreshingSpinner="circles"\n	            refreshingText="刷新中...">\n	    </ion-refresher-content>\n	 </ion-refresher>\n -->\n  	  <ion-list class="ionlist">\n	    <ion-item class="ion-item" *ngFor="let item of result" (click)="selectItem(item)">\n			<button ion-button item-end *ngIf="homeSearch" (click)="showFarmer(item)">农户信息</button>\n			<button ion-button item-end *ngIf="homeSearch" (click)="showLivestock(item)">牲畜信息</button>\n		    <h2>{{ item.name }} </h2>\n	  	      <p>{{ item.mobile }}</p>\n		      <p>{{ item.cardId }}</p>\n	  	      <p>{{ item.farmAddress }}</p>\n		</ion-item>\n	  </ion-list>\n\n\n	  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">\n	    <ion-infinite-scroll-content\n	      loadingSpinner="bubbles"\n	      loadingText="正在努力加载中">\n	    </ion-infinite-scroll-content>\n	  </ion-infinite-scroll>\n\n	  \n</ion-content>'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/search/search.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_6__providers_farmer_farmer__["a" /* FarmerProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
     ], SearchPage);

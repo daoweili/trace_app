@@ -53,19 +53,9 @@ export class ScanPage {
 
 
   doScan1(){
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
-     let c:string = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
+     let c:string = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2100016880401580370E48A\",\" E2000016880401580370E48A\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
      let d:any = JSON.parse(c);
-     
-     this.camera.getPicture(options).then((res) => {
-       /*json转数组*/
-       let c:string = res;
-       let d:any = JSON.parse(c);
+
        if(d.code == 10000){
           this.settingProvider.scanResult = d;
           this.appCtrl.getRootNav().push(DiscoveryPage);
@@ -74,8 +64,6 @@ export class ScanPage {
        } else if(d.code == 9999){
           this.settingProvider.presentAlert(d.msg,"");
        }
-    }, (err) => {
-      
-    });
+
   }
 }

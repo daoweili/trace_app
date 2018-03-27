@@ -24,8 +24,10 @@ export class MyHttpInterceptor implements HttpInterceptor {
     let ok: string;
     const pattern = new RegExp('specialManager/epidemicPrevention/queryByArea/[0-9]+$', 'ig');
     const patternheartbeat = new RegExp('heartbeat/special_manager','ig');
+    const patterncount = new RegExp('specialManager/farmer/count(.*)', 'ig');
+
     if(req instanceof HttpRequest) {
-        if(pattern.test(req.url)==false && patternheartbeat.test(req.url)==false){
+        if(pattern.test(req.url)==false && patternheartbeat.test(req.url)==false && patterncount.test(req.url)==false){
             console.log("弹出，请求中，请等待...");
             this.settingProvider.presentLoading();
             this.settingProvider.loading.present();
@@ -40,7 +42,7 @@ export class MyHttpInterceptor implements HttpInterceptor {
                 console.log("go to login");
               }
 
-              if( event.url,pattern.test(event.url) == false && patternheartbeat.test(req.url)==false && this.settingProvider.loading != null ){
+              if( event.url,pattern.test(event.url) == false && patternheartbeat.test(req.url)==false && this.settingProvider.loading != null && patterncount.test(req.url)==false){
                 this.settingProvider.dismissLoading();
                 this.settingProvider.loading = null;
                 console.log("消失，请求中，请等待...");

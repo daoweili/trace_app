@@ -22,9 +22,10 @@ export class SettingProvider {
    /*登陆用户信息*/
    user :any;
    /*行政列表*/
+
    cityColumns: any[];
    /*服务器通讯地址*/
-   apiUrl :string ="http://47.96.48.160/app";
+   apiUrl :string ="http://localhost:8100/app";
    /*根据行政区域存储防疫类型*/
    epidemicPrevention :Object;
    keyword :string ="";
@@ -58,7 +59,7 @@ export class SettingProvider {
       epidemicProduct:'',
       epidemicBatch:'',
       healthy:1,
-      insureState:1,
+      insureState:2,
       type:"1",
       insureId:"1",
       farmer:"",

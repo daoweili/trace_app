@@ -70,6 +70,21 @@ export class SearchPage {
  }
 
 
+doSearch() {
+      if(this.settingProvider.keyword!=""){
+          this.farmerProvider.farmerSearch(this.settingProvider.keyword).subscribe((res) => {
+            console.log("farmer" ,res["data"]["list"]);
+            this.result = res["data"]["list"];
+            console.log("result",this.result);
+          }, (err) => {
+           this.settingProvider.dismissLoading();
+           this.settingProvider.presentAlert("貌似网络出了点小差～",'');
+          });
+      }
+    
+  }
+
+
  getItems(ev: any) {
     if(ev.inputType=="insertText" || ev.inputType=="deleteContentBackward" || ev.inputType=="deleteByCut" || ev.inputType=="insertFromPaste")
       if(ev.target.value!=""){

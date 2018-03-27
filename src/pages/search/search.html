@@ -13,7 +13,10 @@
 </ion-header>
 
 <ion-content class="content content-md">
- 	<ion-searchbar [(ngModel)]="this.settingProvider.keyword" placeholder="按农户名称或者4位身份证尾数搜索" (ionInput)="getItems($event)"></ion-searchbar>
+ 	<ion-searchbar [(ngModel)]="this.settingProvider.keyword" placeholder="农户名称、4位身份证尾数"></ion-searchbar>
+ 	<button class="balanced" style="width: 100px;position: absolute;right: 0;top: 2px;z-index: 99999;height: 50px;" ion-button block  (click)="doSearch()">
+	      	搜索
+	</button>
  	
  	<!--  <ion-refresher (refresh)="doRefresh($event)">
 	    <ion-refresher-content

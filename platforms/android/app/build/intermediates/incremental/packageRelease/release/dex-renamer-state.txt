@@ -1,0 +1,4 @@
+#Sun Mar 25 23:41:18 CST 2018
+base.0=/Users/zhengchenxiao/Downloads/ionic/trace/platforms/android/app/build/intermediates/transforms/dex/release/0
+renamed.0=classes.dex
+file.0=/Users/zhengchenxiao/Downloads/ionic/trace/platforms/android/app/build/intermediates/transforms/dex/release/0/classes.dex

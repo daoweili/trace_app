@@ -89,7 +89,7 @@
 
 
 
-    <ion-item class="item" style="display: none">
+    <ion-item class="item">
       <ion-label fixed>  投保情况</ion-label>
       <ion-select [(ngModel)]="this.settingProvider.ltock.insureState" okText="确定" cancelText="取消">
       <ion-option value="1">投保</ion-option>
@@ -98,7 +98,7 @@
     </ion-item>
 
 
-    <ion-item class="item" style="display: none" *ngIf="this.settingProvider.ltock.insureState=='1'">
+    <ion-item class="item"  *ngIf="this.settingProvider.ltock.insureState=='1'">
       <ion-label fixed>  投保编号</ion-label>
       <ion-input type="tel" placeholder="请输入投保编号" readonly="true"  (ionFocus)="doScan()" [(ngModel)]="this.settingProvider.ltock.insureId" ></ion-input>
       <ion-icon item-end (click)="doScan()" name="qr-scanner"></ion-icon>

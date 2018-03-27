@@ -83,7 +83,7 @@ export class LivestockPage {
       epidemicProduct:'',
       epidemicBatch:'',
       healthy:1,
-      insureState:1,
+      insureState:2,
       type:"1",
       insureId:"",
       accidentDead:"1",sex:"1",

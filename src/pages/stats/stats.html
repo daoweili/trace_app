@@ -28,9 +28,9 @@
     </ion-list-header>
 
     <ion-item>
-      Affection
+      农户数
       <ion-note item-end>
-        Very Little
+        {{area}}
       </ion-note>
     </ion-item>
 
@@ -43,11 +43,13 @@
       <ion-icon item-end name="md-stats" color="primary"></ion-icon>
     </ion-list-header>
 
-
-    <ion-item>
-      Affection
+    <ion-item *ngFor="let nc of statser">
+      {{nc.typeStr}}
+      <ion-note style="padding-left: 41%;">
+       {{ nc.sexStr }}
+      </ion-note>
       <ion-note item-end>
-        Very Little
+       {{ nc.count }}
       </ion-note>
     </ion-item>
 
