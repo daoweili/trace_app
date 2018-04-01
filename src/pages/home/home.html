@@ -17,7 +17,7 @@
 	    </ion-col>
 	    <ion-col col-6>
 	    	
-	      <ion-item *ngIf="this.settingProvider.user.area.level<5">
+	      <ion-item *ngIf="this.settingProvider.user!=null && this.settingProvider.user.area.level<5">
 			  <ion-label>区域</ion-label>
 			  <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId" doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>
 			</ion-item>

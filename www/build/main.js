@@ -1,22 +1,248 @@
-webpackJsonp([11],{
+webpackJsonp([13],{
 
-/***/ 127:
+/***/ 130:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScanPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_setting_setting__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__livestock_livestock__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__discovery_discovery__ = __webpack_require__(93);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var ScanPage = (function () {
+    function ScanPage(navCtrl, appCtrl, settingProvider, camera, backButtonService, platform) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.appCtrl = appCtrl;
+        this.settingProvider = settingProvider;
+        this.camera = camera;
+        this.backButtonService = backButtonService;
+        this.platform = platform;
+        platform.ready().then(function () {
+            _this.backButtonService.registerBackButtonAction(_this.tabRef);
+        });
+    }
+    ScanPage.prototype.doInsert = function () {
+        this.settingProvider.keyword = "";
+        this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_5__livestock_livestock__["a" /* LivestockPage */]);
+    };
+    ScanPage.prototype.doScan = function () {
+        var _this = this;
+        var options = {
+            quality: 100,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE
+        };
+        this.settingProvider.keyword = "";
+        this.camera.getPicture(options).then(function (res) {
+            /*json转数组*/
+            var c = res;
+            var d = JSON.parse(c);
+            if (d.code == 10000) {
+                _this.settingProvider.scanResult = _this.format(d.data);
+                if (_this.settingProvider.scanResult.length == 1) {
+                    console.log("只有一条", _this.settingProvider.scanResult[0]);
+                    _this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_5__livestock_livestock__["a" /* LivestockPage */], { item: _this.settingProvider.scanResult[0].code, type: "scan" });
+                }
+                else {
+                    _this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__discovery_discovery__["a" /* DiscoveryPage */]);
+                }
+            }
+            else if (d.code == 9998) {
+                _this.settingProvider.presentAlert(d.msg, "");
+            }
+            else if (d.code == 9999) {
+                _this.settingProvider.presentAlert(d.msg, "");
+            }
+        }, function (err) {
+        });
+    };
+    ScanPage.prototype.format = function (rows) {
+        var res = [];
+        for (var i = 0; i < rows.length; i++) {
+            var a = { code: "", msg: "未操作" };
+            a.code = rows[i];
+            res.push(a);
+        }
+        return res;
+    };
+    ScanPage.prototype.doScan1 = function () {
+        //let c:string = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2100016880401580370E48A\",\" E2000016880401580370E48A\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
+        var c = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\"],\"msg\":\"success\"}";
+        var d = JSON.parse(c);
+        if (d.code == 10000) {
+            this.settingProvider.scanResult = this.format(d.data);
+            if (this.settingProvider.scanResult.length == 1) {
+                console.log("只有一条", this.settingProvider.scanResult[0]);
+                this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_5__livestock_livestock__["a" /* LivestockPage */], { item: this.settingProvider.scanResult[0].code, type: "scan" });
+            }
+            else {
+                this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__discovery_discovery__["a" /* DiscoveryPage */]);
+            }
+        }
+        else if (d.code == 9998) {
+            this.settingProvider.presentAlert(d.msg, "");
+        }
+        else if (d.code == 9999) {
+            this.settingProvider.presentAlert(d.msg, "");
+        }
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
+    ], ScanPage.prototype, "tabRef", void 0);
+    ScanPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'page-scan',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/scan/scan.html"*/'<ion-content padding>\n	  <div class="blank" ></div>\n\n  <h2>滴一下，扫描</h2>\n  <p>\n点击 “牲畜扫描” 按钮，可以开始扫描耳标。</p>\n<p>当扫描到耳标后，会有滴的一声，并自动转到标签编号选择处。</p>\n<p>请注意：尽量将你的PAD背对耳标，可有效增加扫描距离。  </p>\n  \n  <ion-row>\n  	<ion-col>\n  		<button class="balanced" ion-button block  (click)="doScan()">\n	      	牲畜扫描\n	    </button>\n  	</ion-col>\n  </ion-row>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/scan/scan.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_4__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"]])
+    ], ScanPage);
+    return ScanPage;
+}());
+
+//# sourceMappingURL=scan.js.map
+
+/***/ }),
+
+/***/ 131:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabsPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__person_person__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scan_scan__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_home__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__farmer_farmer__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__analysis_analysis__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_backButton__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__providers_setting_setting__ = __webpack_require__(15);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+var TabsPage = (function () {
+    function TabsPage(navCtrl, events, backButtonService, platform, settingProvider, appCtrl) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.events = events;
+        this.backButtonService = backButtonService;
+        this.platform = platform;
+        this.settingProvider = settingProvider;
+        this.appCtrl = appCtrl;
+        this.tab1Root = __WEBPACK_IMPORTED_MODULE_4__home_home__["a" /* HomePage */];
+        this.tab2Root = __WEBPACK_IMPORTED_MODULE_3__scan_scan__["a" /* ScanPage */];
+        this.tab3Root = __WEBPACK_IMPORTED_MODULE_5__farmer_farmer__["a" /* FarmerPage */];
+        this.tab4Root = __WEBPACK_IMPORTED_MODULE_2__person_person__["a" /* PersonPage */];
+        this.tab5Root = __WEBPACK_IMPORTED_MODULE_7__analysis_analysis__["a" /* AnalysisPage */];
+        platform.ready().then(function () {
+            _this.backButtonService.registerBackButtonAction(_this.tabRef);
+        });
+    }
+    TabsPage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        this.listenEvents();
+        console.log(this.settingProvider.loginstate);
+        this.timer = setInterval(function () {
+            if (_this.settingProvider.loginstate == true) {
+                _this.settingProvider.getheartbeat().subscribe(function (res) {
+                    if (res["code"] == 10005 && _this.settingProvider.loginstate == true) {
+                        _this.settingProvider.presentAlert("登录超时、或者可能出现异地登录", '');
+                        _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_6__login_login__["a" /* LoginPage */]);
+                        console.log("go to login");
+                    }
+                }, function (err) {
+                });
+            }
+            ;
+        }, this.settingProvider.heartbeat);
+        console.log('界面创建');
+    };
+    TabsPage.prototype.ionViewWillUnload = function () {
+        this.settingProvider.loginstate = false;
+        this.events.unsubscribe('toLogin');
+        clearTimeout(this.timer);
+        console.log('界面销毁');
+    };
+    TabsPage.prototype.listenEvents = function () {
+        var _this = this;
+        this.events.subscribe('toLogin', function () {
+            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_6__login_login__["a" /* LoginPage */]);
+            // this.nav.pop(); 使用这种方式也可以，但是会在登录框中默认填上值
+            // console.log('返回登录');
+        });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
+    ], TabsPage.prototype, "tabRef", void 0);
+    TabsPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/tabs/tabs.html"*/'<ion-tabs #myTabs>\n  <ion-tab [root]="tab1Root" tabTitle="搜索" tabIcon="search"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="扫描" tabIcon="qr-scanner"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="农户" tabIcon="ios-person-add-outline"></ion-tab>\n  <ion-tab [root]="tab5Root" tabTitle="统计" tabIcon="ios-podium-outline"></ion-tab>\n  <ion-tab [root]="tab4Root" tabTitle="我的" tabIcon="person"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/tabs/tabs.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"], __WEBPACK_IMPORTED_MODULE_8__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_9__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"]])
+    ], TabsPage);
+    return TabsPage;
+}());
+
+//# sourceMappingURL=tabs.js.map
+
+/***/ }),
+
+/***/ 132:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PersonPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__chgpasswd_chgpasswd__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__email_email__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__truename_truename__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__certificate_certificate__ = __webpack_require__(164);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Rx__ = __webpack_require__(401);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_special_special__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__providers_setting_setting__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__login_login__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__chgpasswd_chgpasswd__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__email_email__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__truename_truename__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__about_about__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__certificate_certificate__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_Rx__ = __webpack_require__(406);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__providers_special_special__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_setting_setting__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__login_login__ = __webpack_require__(45);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -37,9 +263,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var PersonPage = (function () {
-    function PersonPage(navCtrl, appCtrl, specialProvider, settingProvider, platform, backButtonService) {
+    function PersonPage(events, navCtrl, appCtrl, specialProvider, settingProvider, platform, backButtonService) {
         var _this = this;
+        this.events = events;
         this.navCtrl = navCtrl;
         this.appCtrl = appCtrl;
         this.specialProvider = specialProvider;
@@ -64,7 +292,7 @@ var PersonPage = (function () {
         }, 3000);
     };
     PersonPage.prototype.doChgCertificate = function (certificate) {
-        this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__certificate_certificate__["a" /* CertificatePage */]);
+        this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_7__certificate_certificate__["a" /* CertificatePage */]);
     };
     PersonPage.prototype.doChgEmail = function (email) {
         this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_4__email_email__["a" /* EmailPage */]);
@@ -75,12 +303,17 @@ var PersonPage = (function () {
     PersonPage.prototype.doChgPassword = function () {
         this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_3__chgpasswd_chgpasswd__["a" /* ChgpasswdPage */]);
     };
+    PersonPage.prototype.doAbout = function () {
+        this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__about_about__["a" /* AboutPage */]);
+    };
     PersonPage.prototype.doOut = function () {
         var _this = this;
         this.specialProvider.logout().subscribe(function (res) {
             if (res["code"] == 10000) {
-                _this.navCtrl.popToRoot();
-                _this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_10__login_login__["a" /* LoginPage */]);
+                _this.settingProvider.loginstate = false;
+                console.log(_this.tabRef);
+                _this.events.publish('toLogin');
+                _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_11__login_login__["a" /* LoginPage */]);
             }
             else {
                 _this.settingProvider.presentAlert(res["msg"], '');
@@ -100,9 +333,9 @@ var PersonPage = (function () {
     ], PersonPage.prototype, "tabRef", void 0);
     PersonPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-person',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/person/person.html"*/'\n<ion-header>\n  <ion-navbar #header  color="primary">\n    <ion-title>个人资料</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content  (ionScroll)="scrollEvent($event)">\n  <ion-list class="ionlist">\n    <div ion-item class="personinfo" style="border-top:0px;">\n      <h2>手机号码：{{this.settingProvider.user.mobile}}</h2>\n      <p>行政区域：{{this.settingProvider.user.area.name}}</p>\n      <p *ngIf="this.settingProvider.user.area.level==5">权限角色：乡镇专管员</p>\n      <p *ngIf="this.settingProvider.user.area.level==4">权限角色：县市专管员</p>\n      <p *ngIf="this.settingProvider.user.area.level==3">权限角色：地市专管员</p>\n      <p *ngIf="this.settingProvider.user.area.level==2">权限角色：省份专管员</p>\n      <p *ngIf="this.settingProvider.user.area.level==1">权限角色：国家专管员</p>\n\n    </div>\n\n\n    <button ion-item (click)="doChgName()">\n      <text-avatar text="N" color="rgb(131, 17, 51)" item-left></text-avatar>\n      <h2>姓名</h2>\n      <p>{{this.settingProvider.user.name}}</p>\n    </button>\n\n    <button ion-item  (click)="doChgCertificate()" outline>\n      <text-avatar text="I" color="rgb(77, 186, 255)" item-left></text-avatar>\n      <h2>身份证</h2>\n      <p>{{this.settingProvider.user.cardId}}</p>\n    </button>\n\n    <button ion-item (click)="doChgEmail()">\n      <text-avatar text="E" color="rgb(255, 236, 77)" item-left></text-avatar>\n      <h2>邮箱地址</h2>\n      <p>{{this.settingProvider.user.email}}</p>\n    </button>\n\n    <button ion-item (click)="doChgPassword()">\n      <text-avatar text="R" color="rgb(140, 77, 255)" item-left></text-avatar>\n      <h2>修改密码</h2>\n    </button>\n\n\n    <button ion-item item-end (click)="doOut()">\n      <text-avatar text="Q" color="rgb(162, 255, 77)" item-left></text-avatar>\n      <h2> 注销</h2>\n    </button>\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/person/person.html"*/
+            selector: 'page-person',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/person/person.html"*/'\n<ion-header>\n  <ion-navbar #header  color="primary">\n    <ion-title>个人资料</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content  (ionScroll)="scrollEvent($event)">\n  <ion-list class="ionlist" *ngIf="this.settingProvider.user">\n    <div ion-item class="personinfo" style="border-top:0px;">\n      <h2>手机号码：{{this.settingProvider.user.mobile}}</h2>\n      <p>行政区域：{{this.settingProvider.user.area.name}}</p>\n      <p *ngIf="this.settingProvider.user.area.level==5">权限角色：乡镇专管员</p>\n      <p *ngIf="this.settingProvider.user.area.level==4">权限角色：县市专管员</p>\n      <p *ngIf="this.settingProvider.user.area.level==3">权限角色：地市专管员</p>\n      <p *ngIf="this.settingProvider.user.area.level==2">权限角色：省份专管员</p>\n      <p *ngIf="this.settingProvider.user.area.level==1">权限角色：国家专管员</p>\n\n    </div>\n\n\n    <button ion-item (click)="doChgName()">\n      <text-avatar text="N" color="rgb(131, 17, 51)" item-left></text-avatar>\n      <h2>姓名</h2>\n      <p>{{this.settingProvider.user.name}}</p>\n    </button>\n\n    <button ion-item  (click)="doChgCertificate()" outline>\n      <text-avatar text="I" color="rgb(77, 186, 255)" item-left></text-avatar>\n      <h2>身份证</h2>\n      <p>{{this.settingProvider.user.cardId}}</p>\n    </button>\n\n    <!-- <button ion-item (click)="doChgEmail()">\n      <text-avatar text="E" color="rgb(255, 236, 77)" item-left></text-avatar>\n      <h2>邮箱地址</h2>\n      <p>{{this.settingProvider.user.email}}</p>\n    </button> -->\n\n    <button ion-item (click)="doChgPassword()">\n      <text-avatar text="R" color="rgb(140, 77, 255)" item-left></text-avatar>\n      <h2>修改密码</h2>\n    </button>\n\n    <button ion-item (click)="doAbout()">\n      <text-avatar text="A" color="rgb(255, 236, 77)" item-left></text-avatar>\n      <h2>关于我们</h2>\n      <p></p>\n    </button>\n\n    <button ion-item item-end (click)="doOut()">\n      <text-avatar text="Q" color="rgb(162, 255, 77)" item-left></text-avatar>\n      <h2> 注销</h2>\n    </button>\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/person/person.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_8__providers_special_special__["a" /* SpecialProvider */], __WEBPACK_IMPORTED_MODULE_9__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_9__providers_special_special__["a" /* SpecialProvider */], __WEBPACK_IMPORTED_MODULE_10__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
     ], PersonPage);
     return PersonPage;
 }());
@@ -111,14 +344,95 @@ var PersonPage = (function () {
 
 /***/ }),
 
-/***/ 13:
+/***/ 145:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_status_bar__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__search_search__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_storage__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_setting_setting__ = __webpack_require__(15);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var HomePage = (function () {
+    function HomePage(navCtrl, statusBar, platform, appCtrl, storage, settingProvider, backButtonService) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.statusBar = statusBar;
+        this.platform = platform;
+        this.appCtrl = appCtrl;
+        this.storage = storage;
+        this.settingProvider = settingProvider;
+        this.backButtonService = backButtonService;
+        platform.ready().then(function () {
+            _this.backButtonService.registerBackButtonAction(null);
+        });
+        this.statusBar.overlaysWebView(false);
+        this.statusBar.show();
+        this.statusBar.backgroundColorByHexString('#333');
+    }
+    HomePage.prototype.ionViewDidEnter = function () {
+        var _this = this;
+        // console.log(this.settingProvider);
+        if (this.settingProvider != null) {
+            if (this.settingProvider.user != null) {
+                if (this.settingProvider.user.areaId > 0) {
+                    this.settingProvider.getEpidemicPrevention(this.settingProvider.user.areaId).subscribe(function (res) {
+                        if (res["code"] == 10000) {
+                            _this.settingProvider.epidemicPrevention = res["data"];
+                        }
+                    }, function (err) {
+                        console.log(err);
+                    });
+                }
+            }
+        }
+    };
+    /*搜索*/
+    HomePage.prototype.doSearch = function (keyword) {
+        if (keyword.value.length > 0) {
+            this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_4__search_search__["a" /* SearchPage */], { keyword: keyword.value, searchType: "homeSearch" });
+        }
+    };
+    HomePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'page-home',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/home/home.html"*/'<ion-content padding>\n  <div class="blank" ></div>\n\n   <div class="search_logo"></div>\n\n  <ion-grid>\n  	<ion-row>\n  		<ion-col>\n  			<ion-searchbar  placeholder="按农户名称或者4位身份证尾数搜索" #keyword></ion-searchbar>\n  		</ion-col>\n  	</ion-row>\n	<ion-row>\n	    <ion-col col-6>\n	      <button class="balanced" ion-button block  (click)="doSearch(keyword)">\n	      	搜索\n	    	</button>\n	    </ion-col>\n	    <ion-col col-6>\n	    	\n	      <ion-item *ngIf="this.settingProvider.user!=null && this.settingProvider.user.area.level<5">\n			  <ion-label>区域</ion-label>\n			  <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId" doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n			</ion-item>\n	    </ion-col>\n	</ion-row>\n\n	<ion-row style="display: none">\n		<ion-col>\n			那些你曾经搜索过的：\n		</ion-col>\n	</ion-row>\n\n\n	<ion-row style="display: none">\n		<ion-col>\n			休闲鞋\n		</ion-col>\n	</ion-row>\n\n\n  </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/home/home.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_3__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_5__ionic_storage__["b" /* Storage */], __WEBPACK_IMPORTED_MODULE_6__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
+    ], HomePage);
+    return HomePage;
+}());
+
+//# sourceMappingURL=home.js.map
+
+/***/ }),
+
+/***/ 15:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_httpService__ = __webpack_require__(59);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -133,7 +447,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 /*
   Generated class for the SettingProvider provider.
-
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
@@ -146,19 +459,19 @@ var SettingProvider = (function () {
         /*******************************************
         * 全局对象定义
         ******************************************/
+        /*扫描结果*/
         /*心跳间隔时间 秒*/
-        this.heartbeat = 1000 * 30;
+        this.heartbeat = 1000 * 10;
         /* 是否已经登录 */
         this.loginstate = false;
-        /*服务器通讯地址*/
-        this.apiUrl = "http://localhost:8100/app";
         this.keyword = "";
         /*扫描结果*/
-        this.scanResult = "";
+        this.scanResult = [];
         /*是否插入牲畜*/
         this.ltockinsert = true;
         /*时间格式*/
-        this.formatDate = function (time) {
+        this.formatDate = function (time, date) {
+            if (date === void 0) { date = true; }
             var Dates = new Date(time);
             var year = Dates.getFullYear();
             var month = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
@@ -166,34 +479,36 @@ var SettingProvider = (function () {
             var hours = Dates.getHours();
             var min = Dates.getMinutes();
             var seconds = Dates.getSeconds();
-            return year + '-' + month + '-' + day + " " + hours + ":" + min + ":" + seconds;
+            var str = "";
+            if (date == true) {
+                str = year + '-' + month + '-' + day + " " + hours + ":" + min + ":" + seconds;
+            }
+            else {
+                str = year + '-' + month + '-' + day;
+            }
+            return str;
         };
+        /*农户名 临时用*/
+        this.farmername = "";
         /*牲畜*/
         this.ltock = {
             code: "",
             farmId: "0",
-            motherAddress: '',
-            epidemicIds: '',
-            slaughterAddress: '',
-            slaughterRemark: '',
-            saleFlow: '',
-            epidemicType: '',
-            epidemicProduct: '',
-            epidemicBatch: '',
+            motherAddress: "",
+            epidemicIds: "",
+            slaughterAddress: "",
+            slaughterRemark: "",
+            saleFlow: "",
+            epidemicType: "",
+            epidemicProduct: "",
+            epidemicBatch: "",
             healthy: 1,
             insureState: 2,
             type: "1",
             insureId: "1",
-            farmer: "",
             accidentDead: "1",
             sex: "1",
             slaughterDate: this.formatDate(new Date().getTime())
-        };
-        /* http请求头设置 */
-        this.httpOptions = {
-            headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["d" /* HttpHeaders */]({
-                'Content-Type': 'application/json',
-            })
         };
     }
     /******************************************
@@ -228,36 +543,30 @@ var SettingProvider = (function () {
     };
     /* 获取行政区域 */
     SettingProvider.prototype.getEpidemicPrevention = function (areaid) {
-        return this.http.get(this.apiUrl + "/specialManager/epidemicPrevention/queryByArea/" + areaid, this.httpOptions);
+        return this.http.get("app/specialManager/epidemicPrevention/queryByArea/" + areaid, {});
     };
     /* heartbeat */
     SettingProvider.prototype.getheartbeat = function () {
-        return this.http.get("http://47.96.48.160/heartbeat/special_manager", this.httpOptions);
+        return this.http.get("heartbeat/special_manager", {});
     };
     SettingProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["AlertController"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["AlertController"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["LoadingController"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["LoadingController"]) === "function" && _c || Object])
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_httpService__["a" /* HttpService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"]])
     ], SettingProvider);
     return SettingProvider;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=setting.js.map
 
 /***/ }),
 
-/***/ 140:
+/***/ 168:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AboutPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_status_bar__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__search_search__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_storage__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -269,64 +578,86 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
-
-
-
-
-var HomePage = (function () {
-    function HomePage(navCtrl, statusBar, platform, appCtrl, storage, settingProvider, backButtonService) {
-        var _this = this;
+/**
+ * Generated class for the AboutPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var AboutPage = (function () {
+    function AboutPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
-        this.statusBar = statusBar;
-        this.platform = platform;
-        this.appCtrl = appCtrl;
-        this.storage = storage;
-        this.settingProvider = settingProvider;
-        this.backButtonService = backButtonService;
-        platform.ready().then(function () {
-            _this.backButtonService.registerBackButtonAction(null);
-        });
-        this.statusBar.overlaysWebView(false);
-        this.statusBar.show();
-        this.statusBar.backgroundColorByHexString('#333');
-        if (this.settingProvider.user.areaId > 0) {
-            this.settingProvider.getEpidemicPrevention(this.settingProvider.user.areaId).subscribe(function (res) {
-                if (res["code"] == 10000) {
-                    _this.settingProvider.epidemicPrevention = res["data"];
-                }
-            }, function (err) {
-                console.log(err);
-            });
-        }
+        this.navParams = navParams;
     }
-    /*搜索*/
-    HomePage.prototype.doSearch = function (keyword) {
-        if (keyword.value.length > 0) {
-            this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_4__search_search__["a" /* SearchPage */], { keyword: keyword.value, searchType: "homeSearch" });
-        }
+    AboutPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad AboutPage');
     };
-    HomePage = __decorate([
+    AboutPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/home/home.html"*/'<ion-content padding>\n  <div class="blank" ></div>\n\n   <div class="search_logo"></div>\n\n  <ion-grid>\n  	<ion-row>\n  		<ion-col>\n  			<ion-searchbar  placeholder="按农户名称或者4位身份证尾数搜索" #keyword></ion-searchbar>\n  		</ion-col>\n  	</ion-row>\n	<ion-row>\n	    <ion-col col-6>\n	      <button class="balanced" ion-button block  (click)="doSearch(keyword)">\n	      	搜索\n	    	</button>\n	    </ion-col>\n	    <ion-col col-6>\n	    	\n	      <ion-item *ngIf="this.settingProvider.user.area.level<5">\n			  <ion-label>区域</ion-label>\n			  <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId" doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n			</ion-item>\n	    </ion-col>\n	</ion-row>\n\n	<ion-row style="display: none">\n		<ion-col>\n			那些你曾经搜索过的：\n		</ion-col>\n	</ion-row>\n\n\n	<ion-row style="display: none">\n		<ion-col>\n			休闲鞋\n		</ion-col>\n	</ion-row>\n\n\n  </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/home/home.html"*/
+            selector: 'page-about',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/about/about.html"*/'<!--\n  Generated template for the AboutPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n\n   <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n	  <button ion-button navPop>\n	        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>关于</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n  <ion-list class="ionlist">\n  	 <ion-item>\n      <h2>公司全称</h2>\n      <p>武汉食安溯源科技有限公司</p>\n    </ion-item>\n  \n  	 <ion-item>\n      <h2>电话</h2>\n      <p>027-83736399</p>\n    </ion-item>\n\n  	 <ion-item>\n      <h2>邮箱</h2>\n      <p>王老板@下周给.com</p>\n    </ion-item>\n  	 <ion-item>\n      <h2>软件版本</h2>\n      <p>v1.0.0 <span style="padding-left: 30px"> 2018-03-31 </span></p>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/about/about.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_3__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_5__ionic_storage__["b" /* Storage */], __WEBPACK_IMPORTED_MODULE_6__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
-    ], HomePage);
-    return HomePage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"]])
+    ], AboutPage);
+    return AboutPage;
 }());
 
-//# sourceMappingURL=home.js.map
+//# sourceMappingURL=about.js.map
 
 /***/ }),
 
-/***/ 164:
+/***/ 169:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AnalysisPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/**
+ * Generated class for the AnalysisPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var AnalysisPage = (function () {
+    function AnalysisPage(navCtrl, navParams) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    AnalysisPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad AnalysisPage');
+    };
+    AnalysisPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'page-analysis',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/analysis/analysis.html"*/'<!--\n  Generated template for the AnalysisPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n  <ion-navbar   color="primary">\n    <ion-title>数据统计</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/analysis/analysis.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"]])
+    ], AnalysisPage);
+    return AnalysisPage;
+}());
+
+//# sourceMappingURL=analysis.js.map
+
+/***/ }),
+
+/***/ 170:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CertificatePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_special_special__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_backButton__ = __webpack_require__(21);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -386,17 +717,13 @@ var CertificatePage = (function () {
             });
         }
     };
-    /*自定义返回键*/
-    CertificatePage.prototype.goBack = function () {
-        this.navCtrl.pop(); // remember to put this to add the back button behavior
-    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
     ], CertificatePage.prototype, "tabRef", void 0);
     CertificatePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-certificate',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/certificate/certificate.html"*/'<!--\n  Generated template for the CertificatePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>身份证</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n    <div class="blank"></div>\n    <ion-item class="item">\n      <ion-label fixed>身份证</ion-label>\n      <ion-input type="text" [(ngModel)]="cardId" placeholder="请输入二代身份证"></ion-input>\n    </ion-item>\n    <div class="blank"></div>\n  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button class="balanced" (click)="editcardid()" ion-button block >\n      确定\n    </button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/certificate/certificate.html"*/,
+            selector: 'page-certificate',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/certificate/certificate.html"*/'<!--\n  Generated template for the CertificatePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button navPop>\n          <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>身份证</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n    <div class="blank"></div>\n    <ion-item class="item">\n      <ion-label fixed>身份证</ion-label>\n      <ion-input type="text" [(ngModel)]="cardId" placeholder="请输入二代身份证"></ion-input>\n    </ion-item>\n    <div class="blank"></div>\n  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button class="balanced" (click)="editcardid()" ion-button block >\n      确定\n    </button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/certificate/certificate.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_3__providers_special_special__["a" /* SpecialProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_4__services_backButton__["a" /* BackButtonService */]])
     ], CertificatePage);
@@ -407,15 +734,15 @@ var CertificatePage = (function () {
 
 /***/ }),
 
-/***/ 165:
+/***/ 171:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChgpasswdPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_special_special__ = __webpack_require__(44);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -476,17 +803,13 @@ var ChgpasswdPage = (function () {
             });
         }
     };
-    /*自定义返回键*/
-    ChgpasswdPage.prototype.goBack = function () {
-        this.navCtrl.pop(); // remember to put this to add the back button behavior
-    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
     ], ChgpasswdPage.prototype, "tabRef", void 0);
     ChgpasswdPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-chgpasswd',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/chgpasswd/chgpasswd.html"*/'\n<ion-header no-border>\n\n   <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>修改密码</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n	<div class="blank"></div>\n    <ion-item class="item">\n      <ion-label fixed>旧密码</ion-label>\n      <ion-input type="password" required placeholder="请输入旧密码" #oldPassword></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed>新密码</ion-label>\n      <ion-input type="password" required placeholder="请输入密码" #password></ion-input>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>确认密码</ion-label>\n      <ion-input type="password" required placeholder="请输入确认密码" #confirmPassword></ion-input>\n    </ion-item>\n    <div class="blank"></div>\n  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button class="balanced" ion-button block  (click)="changepassword(oldPassword, password,confirmPassword)">\n      确定\n    </button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/chgpasswd/chgpasswd.html"*/,
+            selector: 'page-chgpasswd',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/chgpasswd/chgpasswd.html"*/'\n<ion-header no-border>\n\n   <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button navPop>\n          <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>修改密码</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n	<div class="blank"></div>\n    <ion-item class="item">\n      <ion-label fixed>旧密码</ion-label>\n      <ion-input type="password" required placeholder="请输入旧密码" #oldPassword></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed>新密码</ion-label>\n      <ion-input type="password" required placeholder="请输入密码" #password></ion-input>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>确认密码</ion-label>\n      <ion-input type="password" required placeholder="请输入确认密码" #confirmPassword></ion-input>\n    </ion-item>\n    <div class="blank"></div>\n  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button class="balanced" ion-button block  (click)="changepassword(oldPassword, password,confirmPassword)">\n      确定\n    </button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/chgpasswd/chgpasswd.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_4__providers_special_special__["a" /* SpecialProvider */], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
     ], ChgpasswdPage);
@@ -497,112 +820,14 @@ var ChgpasswdPage = (function () {
 
 /***/ }),
 
-/***/ 166:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DiscoveryPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__livestock_livestock__ = __webpack_require__(66);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-/**
- * Generated class for the DiscoveryPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var DiscoveryPage = (function () {
-    function DiscoveryPage(navCtrl, navParams, settingProvider, platform, backButtonService) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.settingProvider = settingProvider;
-        this.platform = platform;
-        this.backButtonService = backButtonService;
-        /*搜索内容*/
-        this.all = [];
-        /*选中对象*/
-        this.sel = null;
-        platform.ready().then(function () {
-            _this.backButtonService.registerBackButtonAction(_this.tabRef);
-        });
-        var res = this.settingProvider.scanResult;
-        console.log("result", res, "size", res.data.length);
-        if (res.code == 10000 && res.data.length > 0) {
-            for (var i = 0; i < res.data.length; i++) {
-                var a = { code: "" };
-                a.code = res.data[i];
-                console.log("a", a);
-                this.all.push(a);
-            }
-        }
-        else if (res.code == 10000 && res.data.length == 0) {
-            this.msg = "扫描不到任何信息";
-        }
-        else {
-            this.msg = res.msg;
-        }
-    }
-    /*选择*/
-    DiscoveryPage.prototype.selectItem = function (item) {
-        console.log("你选择了", item.code);
-        this.sel = item;
-    };
-    /*选择跳转*/
-    DiscoveryPage.prototype.goto = function () {
-        console.log(this.sel);
-        if (this.sel !== null) {
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__livestock_livestock__["a" /* LivestockPage */], { item: this.sel, type: "scan" });
-        }
-        else {
-            this.settingProvider.presentAlert("请选择", "");
-        }
-    };
-    /*自定义返回键*/
-    DiscoveryPage.prototype.goBack = function () {
-        this.navCtrl.pop(); // remember to put this to add the back button behavior
-    };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
-    ], DiscoveryPage.prototype, "tabRef", void 0);
-    DiscoveryPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-discovery',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/discovery/discovery.html"*/'<!--\n  Generated template for the DiscoveryPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>扫描结果</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n	<div class="blank">{{msg}}</div>\n	<ion-list class="ionlist">\n		<ion-list radio-group [(ngModel)]="sel">\n		  <ion-item *ngFor="let item of all" class="item item-block item-ios item-radio">\n		    <ion-label>{{item.code}}</ion-label>\n		    <ion-radio value="{{item.code}}"></ion-radio>\n		  </ion-item>\n		</ion-list>\n\n		<ion-list>\n			<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n		    <button class="balanced" ion-button block  (click)="goto()">\n		      选择\n		    </button>\n		  </div>\n	    </ion-list>\n	  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/discovery/discovery.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
-    ], DiscoveryPage);
-    return DiscoveryPage;
-}());
-
-//# sourceMappingURL=discovery.js.map
-
-/***/ }),
-
-/***/ 167:
+/***/ 172:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MapPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__farmer_farmer__ = __webpack_require__(67);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -756,15 +981,15 @@ var MapPage = (function () {
 
 /***/ }),
 
-/***/ 168:
+/***/ 173:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmailPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_special_special__ = __webpack_require__(44);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -821,17 +1046,13 @@ var EmailPage = (function () {
             });
         }
     };
-    /*自定义返回键*/
-    EmailPage.prototype.goBack = function () {
-        this.navCtrl.pop(); // remember to put this to add the back button behavior
-    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
     ], EmailPage.prototype, "tabRef", void 0);
     EmailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-email',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/email/email.html"*/'<!--\n  Generated template for the EmailPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n \n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>邮箱</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n<div class="blank"></div>\n    <ion-item class="item">\n      <ion-label fixed>邮箱</ion-label>\n      <ion-input type="email" [(ngModel)]="email" placeholder="请输入邮箱"></ion-input>\n    </ion-item>\n    <div class="blank"></div>\n  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button class="balanced" (click)="editemail()" ion-button block >\n      确定\n    </button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/email/email.html"*/,
+            selector: 'page-email',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/email/email.html"*/'<!--\n  Generated template for the EmailPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n \n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button navPop>\n          <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>邮箱</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n<div class="blank"></div>\n    <ion-item class="item">\n      <ion-label fixed>邮箱</ion-label>\n      <ion-input type="email" [(ngModel)]="email" placeholder="请输入邮箱"></ion-input>\n    </ion-item>\n    <div class="blank"></div>\n  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button class="balanced" (click)="editemail()" ion-button block >\n      确定\n    </button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/email/email.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_4__providers_special_special__["a" /* SpecialProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
     ], EmailPage);
@@ -842,15 +1063,15 @@ var EmailPage = (function () {
 
 /***/ }),
 
-/***/ 169:
+/***/ 174:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TruenamePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_special_special__ = __webpack_require__(44);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -907,17 +1128,13 @@ var TruenamePage = (function () {
             });
         }
     };
-    /*自定义返回键*/
-    TruenamePage.prototype.goBack = function () {
-        this.navCtrl.pop(); // remember to put this to add the back button behavior
-    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
     ], TruenamePage.prototype, "tabRef", void 0);
     TruenamePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-truename',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/truename/truename.html"*/'<!--\n  Generated template for the EmailPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n  <ion-navbar  color="primary">\n    <ion-title>名称</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n\n<ion-content>\n<div class="blank"></div>\n    <ion-item class="item">\n      <ion-label fixed>名称</ion-label>\n      <ion-input type="text" [(ngModel)]="name" placeholder="请输入名称"></ion-input>\n    </ion-item>\n    <div class="blank"></div>\n  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button class="balanced" (click)="editname()" ion-button block >\n      确定\n    </button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/truename/truename.html"*/,
+            selector: 'page-truename',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/truename/truename.html"*/'<!--\n  Generated template for the EmailPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button navPop>\n          <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>名称</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n<div class="blank"></div>\n    <ion-item class="item">\n      <ion-label fixed>名称</ion-label>\n      <ion-input type="text" [(ngModel)]="name" placeholder="请输入名称"></ion-input>\n    </ion-item>\n    <div class="blank"></div>\n  <div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button class="balanced" (click)="editname()" ion-button block >\n      确定\n    </button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/truename/truename.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_4__providers_special_special__["a" /* SpecialProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
     ], TruenamePage);
@@ -928,15 +1145,15 @@ var TruenamePage = (function () {
 
 /***/ }),
 
-/***/ 170:
+/***/ 175:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StatsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_farmer_farmer__ = __webpack_require__(78);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1020,7 +1237,7 @@ var StatsPage = (function () {
     ], StatsPage.prototype, "tabRef", void 0);
     StatsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-stats',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/stats/stats.html"*/'<!--\n  Generated template for the StatsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>信息统计</ion-title>\n  </ion-navbar>\n\n\n</ion-header>\n\n\n<ion-content padding>\n <ion-list>\n\n    <ion-list-header>\n      农户统计数据\n      <ion-icon item-end name="md-stats" color="primary"></ion-icon>\n    </ion-list-header>\n\n    <ion-item>\n      农户数\n      <ion-note item-end>\n        {{area}}\n      </ion-note>\n    </ion-item>\n\n\n\n    <div class="blank"></div>\n\n    <ion-list-header>\n      牲畜统计数据\n      <ion-icon item-end name="md-stats" color="primary"></ion-icon>\n    </ion-list-header>\n\n    <ion-item *ngFor="let nc of statser">\n      {{nc.typeStr}}\n      <ion-note style="padding-left: 41%;">\n       {{ nc.sexStr }}\n      </ion-note>\n      <ion-note item-end>\n       {{ nc.count }}\n      </ion-note>\n    </ion-item>\n\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/stats/stats.html"*/,
+            selector: 'page-stats',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/stats/stats.html"*/'<!--\n  Generated template for the StatsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button navPop>\n          <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>信息统计</ion-title>\n  </ion-navbar>\n\n\n</ion-header>\n\n\n<ion-content padding>\n <ion-list>\n\n    <ion-list-header>\n      农户统计数据\n      <ion-icon item-end name="md-stats" color="primary"></ion-icon>\n    </ion-list-header>\n\n    <ion-item>\n      农户数\n      <ion-note item-end>\n        {{area}}\n      </ion-note>\n    </ion-item>\n\n\n\n    <div class="blank"></div>\n\n    <ion-list-header>\n      牲畜统计数据\n      <ion-icon item-end name="md-stats" color="primary"></ion-icon>\n    </ion-list-header>\n\n    <ion-item *ngFor="let nc of statser">\n      {{nc.typeStr}}\n      <ion-note style="padding-left: 41%;">\n       {{ nc.sexStr }}\n      </ion-note>\n      <ion-note item-end>\n       {{ nc.count }}\n      </ion-note>\n    </ion-item>\n\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/stats/stats.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_4__providers_farmer_farmer__["a" /* FarmerProvider */]])
     ], StatsPage);
@@ -1031,7 +1248,7 @@ var StatsPage = (function () {
 
 /***/ }),
 
-/***/ 183:
+/***/ 188:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -1044,7 +1261,7 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 183;
+webpackEmptyAsyncContext.id = 188;
 
 /***/ }),
 
@@ -1054,7 +1271,7 @@ webpackEmptyAsyncContext.id = 183;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BackButtonService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1131,52 +1348,60 @@ var BackButtonService = (function () {
 
 /***/ }),
 
-/***/ 229:
+/***/ 234:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
+	"../pages/about/about.module": [
+		710,
+		12
+	],
+	"../pages/analysis/analysis.module": [
+		711,
+		11
+	],
 	"../pages/certificate/certificate.module": [
-		706,
+		712,
 		10
 	],
 	"../pages/chgpasswd/chgpasswd.module": [
-		707,
+		713,
 		9
 	],
 	"../pages/discovery/discovery.module": [
-		708,
+		714,
 		8
 	],
 	"../pages/email/email.module": [
-		709,
+		715,
 		7
 	],
 	"../pages/farmer/farmer.module": [
-		710,
+		716,
 		6
 	],
 	"../pages/livestock/livestock.module": [
-		711,
+		717,
 		5
 	],
 	"../pages/login/login.module": [
-		712,
+		718,
 		4
 	],
 	"../pages/map/map.module": [
-		713,
+		719,
 		3
 	],
 	"../pages/search/search.module": [
-		714,
+		720,
 		2
 	],
 	"../pages/stats/stats.module": [
-		715,
+		722,
 		1
 	],
 	"../pages/truename/truename.module": [
-		716,
+		721,
 		0
 	]
 };
@@ -1191,19 +1416,19 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 229;
+webpackAsyncContext.id = 234;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 230:
+/***/ 235:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LivestockProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_httpService__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(15);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1227,19 +1452,19 @@ var LivestockProvider = (function () {
     }
     /*添加牲畜*/
     LivestockProvider.prototype.doAddLivestock = function (data) {
-        return this.http.post(this.settingProvider.apiUrl + "/specialManager/livestock/add", data, this.settingProvider.httpOptions);
+        return this.http.post("app/specialManager/livestock/add", data);
     };
     /*编辑牲畜*/
     LivestockProvider.prototype.doEditLivestock = function (data) {
-        return this.http.post(this.settingProvider.apiUrl + "/specialManager/livestock/update", data, this.settingProvider.httpOptions);
+        return this.http.post("app/specialManager/livestock/update", data);
     };
     /*搜索牲畜*/
     LivestockProvider.prototype.doSearchLivestock = function (keyword) {
-        return this.http.get(this.settingProvider.apiUrl + "/specialManager/livestock/query?areaId=" + this.settingProvider.user.areaId + "&code=" + keyword, this.settingProvider.httpOptions);
+        return this.http.get("app/specialManager/livestock/query?areaId=" + this.settingProvider.user.areaId + "&code=" + keyword, {});
     };
     LivestockProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__["a" /* SettingProvider */]])
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_httpService__["a" /* HttpService */], __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__["a" /* SettingProvider */]])
     ], LivestockProvider);
     return LivestockProvider;
 }());
@@ -1248,199 +1473,19 @@ var LivestockProvider = (function () {
 
 /***/ }),
 
-/***/ 234:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabsPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__person_person__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scan_scan__ = __webpack_require__(326);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_home__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__farmer_farmer__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_setting_setting__ = __webpack_require__(13);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-
-var TabsPage = (function () {
-    function TabsPage(backButtonService, platform, settingProvider, appCtrl) {
-        var _this = this;
-        this.backButtonService = backButtonService;
-        this.platform = platform;
-        this.settingProvider = settingProvider;
-        this.appCtrl = appCtrl;
-        this.tab1Root = __WEBPACK_IMPORTED_MODULE_4__home_home__["a" /* HomePage */];
-        this.tab2Root = __WEBPACK_IMPORTED_MODULE_3__scan_scan__["a" /* ScanPage */];
-        this.tab3Root = __WEBPACK_IMPORTED_MODULE_5__farmer_farmer__["a" /* FarmerPage */];
-        this.tab4Root = __WEBPACK_IMPORTED_MODULE_2__person_person__["a" /* PersonPage */];
-        var time;
-        platform.ready().then(function () {
-            _this.backButtonService.registerBackButtonAction(_this.tabRef);
-        });
-        if (this.settingProvider.loginstate == true) {
-            time = setInterval(function () {
-                _this.settingProvider.getheartbeat().subscribe(function (res) {
-                    if (res["code"] == 10005) {
-                        _this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__login_login__["a" /* LoginPage */]);
-                        console.log("go to login");
-                    }
-                }, function (err) {
-                });
-            }, this.settingProvider.heartbeat);
-        }
-        else {
-            clearInterval(time);
-        }
-    }
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
-    ], TabsPage.prototype, "tabRef", void 0);
-    TabsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/tabs/tabs.html"*/'<ion-tabs #myTabs>\n  <ion-tab [root]="tab1Root" tabTitle="搜索" tabIcon="search"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="扫描" tabIcon="qr-scanner"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="农户" tabIcon="ios-person-add-outline"></ion-tab>\n  <ion-tab [root]="tab4Root" tabTitle="我的" tabIcon="person"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/tabs/tabs.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_8__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"]])
-    ], TabsPage);
-    return TabsPage;
-}());
-
-//# sourceMappingURL=tabs.js.map
-
-/***/ }),
-
-/***/ 326:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScanPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_setting_setting__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__livestock_livestock__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__discovery_discovery__ = __webpack_require__(166);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var ScanPage = (function () {
-    function ScanPage(navCtrl, appCtrl, settingProvider, camera, backButtonService, platform) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.appCtrl = appCtrl;
-        this.settingProvider = settingProvider;
-        this.camera = camera;
-        this.backButtonService = backButtonService;
-        this.platform = platform;
-        platform.ready().then(function () {
-            _this.backButtonService.registerBackButtonAction(_this.tabRef);
-        });
-    }
-    ScanPage.prototype.doInsert = function () {
-        this.settingProvider.keyword = "";
-        this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_5__livestock_livestock__["a" /* LivestockPage */]);
-    };
-    ScanPage.prototype.doScan = function () {
-        var _this = this;
-        var options = {
-            quality: 100,
-            destinationType: this.camera.DestinationType.DATA_URL,
-            encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE
-        };
-        this.settingProvider.keyword = "";
-        this.camera.getPicture(options).then(function (res) {
-            /*json转数组*/
-            var c = res;
-            var d = JSON.parse(c);
-            if (d.code == 10000) {
-                _this.settingProvider.scanResult = d;
-                _this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__discovery_discovery__["a" /* DiscoveryPage */]);
-            }
-            else if (d.code == 9998) {
-                _this.settingProvider.presentAlert(d.msg, "");
-            }
-            else if (d.code == 9999) {
-                _this.settingProvider.presentAlert(d.msg, "");
-            }
-        }, function (err) {
-        });
-    };
-    ScanPage.prototype.doScan1 = function () {
-        var c = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2100016880401580370E48A\",\" E2000016880401580370E48A\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
-        var d = JSON.parse(c);
-        if (d.code == 10000) {
-            this.settingProvider.scanResult = d;
-            this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_6__discovery_discovery__["a" /* DiscoveryPage */]);
-        }
-        else if (d.code == 9998) {
-            this.settingProvider.presentAlert(d.msg, "");
-        }
-        else if (d.code == 9999) {
-            this.settingProvider.presentAlert(d.msg, "");
-        }
-    };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
-    ], ScanPage.prototype, "tabRef", void 0);
-    ScanPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-scan',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/scan/scan.html"*/'<ion-content padding>\n	  <div class="blank" ></div>\n\n  <h2>滴一下，扫描</h2>\n  <p>\n    使用设备扫描一下吧，使用方法如下：\n  </p>\n  <p>\n    ...............\n    \n  </p>\n  <ion-row>\n  	<ion-col>\n  		<button class="balanced" ion-button block  (click)="doScan()">\n	      	牲畜扫描\n	    </button>\n  	</ion-col>\n  </ion-row>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/scan/scan.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_4__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"]])
-    ], ScanPage);
-    return ScanPage;
-}());
-
-//# sourceMappingURL=scan.js.map
-
-/***/ }),
-
-/***/ 327:
+/***/ 331:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MTabsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__person_person__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stats_stats__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_home__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__person_person__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stats_stats__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_home__ = __webpack_require__(145);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_setting_setting__ = __webpack_require__(15);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1459,8 +1504,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var MTabsPage = (function () {
-    function MTabsPage(backButtonService, platform, settingProvider, appCtrl) {
+    function MTabsPage(navCtrl, events, backButtonService, platform, settingProvider, appCtrl) {
         var _this = this;
+        this.navCtrl = navCtrl;
+        this.events = events;
         this.backButtonService = backButtonService;
         this.platform = platform;
         this.settingProvider = settingProvider;
@@ -1468,12 +1515,11 @@ var MTabsPage = (function () {
         this.tab1Root = __WEBPACK_IMPORTED_MODULE_4__home_home__["a" /* HomePage */];
         this.tab2Root = __WEBPACK_IMPORTED_MODULE_3__stats_stats__["a" /* StatsPage */];
         this.tab4Root = __WEBPACK_IMPORTED_MODULE_2__person_person__["a" /* PersonPage */];
-        var time;
         platform.ready().then(function () {
             _this.backButtonService.registerBackButtonAction(_this.tabRef);
         });
-        if (this.settingProvider.loginstate == true) {
-            time = setInterval(function () {
+        this.timer = setInterval(function () {
+            if (_this.settingProvider.loginstate == true) {
                 _this.settingProvider.getheartbeat().subscribe(function (res) {
                     if (res["code"] == 10005) {
                         _this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_5__login_login__["a" /* LoginPage */]);
@@ -1481,12 +1527,43 @@ var MTabsPage = (function () {
                     }
                 }, function (err) {
                 });
-            }, this.settingProvider.heartbeat);
-        }
-        else {
-            clearInterval(time);
-        }
+            }
+            ;
+        }, this.settingProvider.heartbeat);
     }
+    MTabsPage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        this.listenEvents();
+        console.log(this.settingProvider.loginstate);
+        this.timer = setInterval(function () {
+            if (_this.settingProvider.loginstate == true) {
+                _this.settingProvider.getheartbeat().subscribe(function (res) {
+                    if (res["code"] == 10005 && _this.settingProvider.loginstate == true) {
+                        _this.settingProvider.presentAlert("登录超时、或者可能出现异地登录", '');
+                        _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_5__login_login__["a" /* LoginPage */]);
+                        console.log("go to login");
+                    }
+                }, function (err) {
+                });
+            }
+            ;
+        }, this.settingProvider.heartbeat);
+        console.log('界面创建');
+    };
+    MTabsPage.prototype.ionViewWillUnload = function () {
+        this.settingProvider.loginstate = false;
+        this.events.unsubscribe('toLogin');
+        clearTimeout(this.timer);
+        console.log('界面销毁');
+    };
+    MTabsPage.prototype.listenEvents = function () {
+        var _this = this;
+        this.events.subscribe('toLogin', function () {
+            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_5__login_login__["a" /* LoginPage */]);
+            // this.nav.pop(); 使用这种方式也可以，但是会在登录框中默认填上值
+            // console.log('返回登录');
+        });
+    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
@@ -1494,7 +1571,7 @@ var MTabsPage = (function () {
     MTabsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/tabs/mtabs.html"*/'<ion-tabs #myTabs>\n  <ion-tab [root]="tab1Root" tabTitle="搜索" tabIcon="search"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="统计" tabIcon="ios-podium-outline"></ion-tab>\n  <ion-tab [root]="tab4Root" tabTitle="我的" tabIcon="person"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/tabs/mtabs.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_7__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"], __WEBPACK_IMPORTED_MODULE_6__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_7__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"]])
     ], MTabsPage);
     return MTabsPage;
 }());
@@ -1503,13 +1580,13 @@ var MTabsPage = (function () {
 
 /***/ }),
 
-/***/ 370:
+/***/ 375:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(371);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(375);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(376);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(380);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -1517,52 +1594,60 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 375:
+/***/ 380:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(698);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_splash_screen__ = __webpack_require__(367);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__directives_text_avatar_text_avatar__ = __webpack_require__(699);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__directives_valid_valid__ = __webpack_require__(701);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_storage__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__my_http_interceptor__ = __webpack_require__(702);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_scan_scan__ = __webpack_require__(326);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_person_person__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_home_home__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_discovery_discovery__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_tabs_tabs__ = __webpack_require__(234);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_tabs_mtabs__ = __webpack_require__(327);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_map_map__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_stats_stats__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_login_login__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_chgpasswd_chgpasswd__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_email_email__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_truename_truename__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_certificate_certificate__ = __webpack_require__(164);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__pages_farmer_farmer__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_search_search__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ion_multi_picker__ = __webpack_require__(703);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_ion_multi_picker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27_ion_multi_picker__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__pages_livestock_livestock__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__ionic_native_camera__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__providers_special_special__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__providers_setting_setting__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__providers_farmer_farmer__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__providers_livestock_livestock__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(702);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_network__ = __webpack_require__(371);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_splash_screen__ = __webpack_require__(372);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__directives_text_avatar_text_avatar__ = __webpack_require__(703);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__directives_valid_valid__ = __webpack_require__(705);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_httpService__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_storage__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__my_http_interceptor__ = __webpack_require__(706);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_backButton__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_scan_scan__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_person_person__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_home_home__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_discovery_discovery__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_tabs_tabs__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_tabs_mtabs__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_map_map__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_about_about__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_stats_stats__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_login_login__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_chgpasswd_chgpasswd__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__pages_email_email__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_truename_truename__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__pages_certificate_certificate__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__pages_farmer_farmer__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__pages_search_search__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__pages_analysis_analysis__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_ion_multi_picker__ = __webpack_require__(707);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_ion_multi_picker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_31_ion_multi_picker__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_livestock_livestock__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__ionic_native_camera__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__providers_special_special__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__providers_setting_setting__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__providers_farmer_farmer__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__providers_livestock_livestock__ = __webpack_require__(235);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
 
 
 
@@ -1604,22 +1689,24 @@ var AppModule = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_12__pages_scan_scan__["a" /* ScanPage */],
-                __WEBPACK_IMPORTED_MODULE_13__pages_person_person__["a" /* PersonPage */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_16__pages_tabs_tabs__["a" /* TabsPage */], __WEBPACK_IMPORTED_MODULE_17__pages_tabs_mtabs__["a" /* MTabsPage */],
-                __WEBPACK_IMPORTED_MODULE_21__pages_chgpasswd_chgpasswd__["a" /* ChgpasswdPage */], __WEBPACK_IMPORTED_MODULE_23__pages_truename_truename__["a" /* TruenamePage */], __WEBPACK_IMPORTED_MODULE_18__pages_map_map__["a" /* MapPage */],
-                __WEBPACK_IMPORTED_MODULE_24__pages_certificate_certificate__["a" /* CertificatePage */],
-                __WEBPACK_IMPORTED_MODULE_22__pages_email_email__["a" /* EmailPage */], __WEBPACK_IMPORTED_MODULE_25__pages_farmer_farmer__["a" /* FarmerPage */], __WEBPACK_IMPORTED_MODULE_15__pages_discovery_discovery__["a" /* DiscoveryPage */],
-                __WEBPACK_IMPORTED_MODULE_26__pages_search_search__["a" /* SearchPage */], __WEBPACK_IMPORTED_MODULE_28__pages_livestock_livestock__["a" /* LivestockPage */], __WEBPACK_IMPORTED_MODULE_19__pages_stats_stats__["a" /* StatsPage */],
-                __WEBPACK_IMPORTED_MODULE_7__directives_text_avatar_text_avatar__["a" /* TextAvatarDirective */], __WEBPACK_IMPORTED_MODULE_8__directives_valid_valid__["a" /* ValidDirective */]
+                __WEBPACK_IMPORTED_MODULE_14__pages_scan_scan__["a" /* ScanPage */],
+                __WEBPACK_IMPORTED_MODULE_15__pages_person_person__["a" /* PersonPage */],
+                __WEBPACK_IMPORTED_MODULE_16__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_23__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_18__pages_tabs_tabs__["a" /* TabsPage */], __WEBPACK_IMPORTED_MODULE_19__pages_tabs_mtabs__["a" /* MTabsPage */],
+                __WEBPACK_IMPORTED_MODULE_24__pages_chgpasswd_chgpasswd__["a" /* ChgpasswdPage */], __WEBPACK_IMPORTED_MODULE_26__pages_truename_truename__["a" /* TruenamePage */], __WEBPACK_IMPORTED_MODULE_20__pages_map_map__["a" /* MapPage */],
+                __WEBPACK_IMPORTED_MODULE_27__pages_certificate_certificate__["a" /* CertificatePage */], __WEBPACK_IMPORTED_MODULE_21__pages_about_about__["a" /* AboutPage */],
+                __WEBPACK_IMPORTED_MODULE_25__pages_email_email__["a" /* EmailPage */], __WEBPACK_IMPORTED_MODULE_28__pages_farmer_farmer__["a" /* FarmerPage */], __WEBPACK_IMPORTED_MODULE_17__pages_discovery_discovery__["a" /* DiscoveryPage */],
+                __WEBPACK_IMPORTED_MODULE_29__pages_search_search__["a" /* SearchPage */], __WEBPACK_IMPORTED_MODULE_32__pages_livestock_livestock__["a" /* LivestockPage */], __WEBPACK_IMPORTED_MODULE_22__pages_stats_stats__["a" /* StatsPage */],
+                __WEBPACK_IMPORTED_MODULE_8__directives_text_avatar_text_avatar__["a" /* TextAvatarDirective */], __WEBPACK_IMPORTED_MODULE_9__directives_valid_valid__["a" /* ValidDirective */], __WEBPACK_IMPORTED_MODULE_30__pages_analysis_analysis__["a" /* AnalysisPage */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["c" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["IonicModule"].forRoot(__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */], {}, {
                     links: [
+                        { loadChildren: '../pages/about/about.module#AboutPageModule', name: 'AboutPage', segment: 'about', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/analysis/analysis.module#AnalysisPageModule', name: 'AnalysisPage', segment: 'analysis', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/certificate/certificate.module#CertificatePageModule', name: 'CertificatePage', segment: 'certificate', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/chgpasswd/chgpasswd.module#ChgpasswdPageModule', name: 'ChgpasswdPage', segment: 'chgpasswd', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/discovery/discovery.module#DiscoveryPageModule', name: 'DiscoveryPage', segment: 'discovery', priority: 'low', defaultHistory: [] },
@@ -1629,43 +1716,44 @@ var AppModule = (function () {
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/map/map.module#MapPageModule', name: 'MapPage', segment: 'map', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/search/search.module#SearchPageModule', name: 'SearchPage', segment: 'search', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/stats/stats.module#StatsPageModule', name: 'StatsPage', segment: 'stats', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/truename/truename.module#TruenamePageModule', name: 'TruenamePage', segment: 'truename', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/truename/truename.module#TruenamePageModule', name: 'TruenamePage', segment: 'truename', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/stats/stats.module#StatsPageModule', name: 'StatsPage', segment: 'stats', priority: 'low', defaultHistory: [] }
                     ]
                 }),
-                __WEBPACK_IMPORTED_MODULE_9__ionic_storage__["a" /* IonicStorageModule */].forRoot({
+                __WEBPACK_IMPORTED_MODULE_11__ionic_storage__["a" /* IonicStorageModule */].forRoot({
                     name: '__mytrace',
                     driverOrder: ['indexeddb', 'sqlite', 'websql']
                 }),
-                __WEBPACK_IMPORTED_MODULE_27_ion_multi_picker__["MultiPickerModule"]
+                __WEBPACK_IMPORTED_MODULE_31_ion_multi_picker__["MultiPickerModule"]
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["IonicApp"]],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_12__pages_scan_scan__["a" /* ScanPage */],
-                __WEBPACK_IMPORTED_MODULE_21__pages_chgpasswd_chgpasswd__["a" /* ChgpasswdPage */],
-                __WEBPACK_IMPORTED_MODULE_24__pages_certificate_certificate__["a" /* CertificatePage */],
-                __WEBPACK_IMPORTED_MODULE_22__pages_email_email__["a" /* EmailPage */],
-                __WEBPACK_IMPORTED_MODULE_25__pages_farmer_farmer__["a" /* FarmerPage */],
-                __WEBPACK_IMPORTED_MODULE_26__pages_search_search__["a" /* SearchPage */],
-                __WEBPACK_IMPORTED_MODULE_28__pages_livestock_livestock__["a" /* LivestockPage */], __WEBPACK_IMPORTED_MODULE_19__pages_stats_stats__["a" /* StatsPage */],
-                __WEBPACK_IMPORTED_MODULE_13__pages_person_person__["a" /* PersonPage */], __WEBPACK_IMPORTED_MODULE_23__pages_truename_truename__["a" /* TruenamePage */], __WEBPACK_IMPORTED_MODULE_18__pages_map_map__["a" /* MapPage */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_16__pages_tabs_tabs__["a" /* TabsPage */], __WEBPACK_IMPORTED_MODULE_17__pages_tabs_mtabs__["a" /* MTabsPage */], __WEBPACK_IMPORTED_MODULE_15__pages_discovery_discovery__["a" /* DiscoveryPage */]
+                __WEBPACK_IMPORTED_MODULE_14__pages_scan_scan__["a" /* ScanPage */],
+                __WEBPACK_IMPORTED_MODULE_24__pages_chgpasswd_chgpasswd__["a" /* ChgpasswdPage */],
+                __WEBPACK_IMPORTED_MODULE_27__pages_certificate_certificate__["a" /* CertificatePage */],
+                __WEBPACK_IMPORTED_MODULE_25__pages_email_email__["a" /* EmailPage */],
+                __WEBPACK_IMPORTED_MODULE_28__pages_farmer_farmer__["a" /* FarmerPage */], __WEBPACK_IMPORTED_MODULE_30__pages_analysis_analysis__["a" /* AnalysisPage */],
+                __WEBPACK_IMPORTED_MODULE_29__pages_search_search__["a" /* SearchPage */],
+                __WEBPACK_IMPORTED_MODULE_32__pages_livestock_livestock__["a" /* LivestockPage */], __WEBPACK_IMPORTED_MODULE_22__pages_stats_stats__["a" /* StatsPage */],
+                __WEBPACK_IMPORTED_MODULE_15__pages_person_person__["a" /* PersonPage */], __WEBPACK_IMPORTED_MODULE_26__pages_truename_truename__["a" /* TruenamePage */], __WEBPACK_IMPORTED_MODULE_20__pages_map_map__["a" /* MapPage */],
+                __WEBPACK_IMPORTED_MODULE_16__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_23__pages_login_login__["a" /* LoginPage */], __WEBPACK_IMPORTED_MODULE_21__pages_about_about__["a" /* AboutPage */],
+                __WEBPACK_IMPORTED_MODULE_18__pages_tabs_tabs__["a" /* TabsPage */], __WEBPACK_IMPORTED_MODULE_19__pages_tabs_mtabs__["a" /* MTabsPage */], __WEBPACK_IMPORTED_MODULE_17__pages_discovery_discovery__["a" /* DiscoveryPage */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__["a" /* StatusBar */],
-                __WEBPACK_IMPORTED_MODULE_6__ionic_native_splash_screen__["a" /* SplashScreen */],
+                __WEBPACK_IMPORTED_MODULE_7__ionic_native_splash_screen__["a" /* SplashScreen */],
                 {
                     provide: __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HTTP_INTERCEPTORS */],
-                    useClass: __WEBPACK_IMPORTED_MODULE_10__my_http_interceptor__["a" /* MyHttpInterceptor */],
+                    useClass: __WEBPACK_IMPORTED_MODULE_12__my_http_interceptor__["a" /* MyHttpInterceptor */],
                     multi: true
                 },
-                __WEBPACK_IMPORTED_MODULE_30__providers_special_special__["a" /* SpecialProvider */],
-                __WEBPACK_IMPORTED_MODULE_31__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_29__ionic_native_camera__["a" /* Camera */],
-                __WEBPACK_IMPORTED_MODULE_32__providers_farmer_farmer__["a" /* FarmerProvider */],
-                __WEBPACK_IMPORTED_MODULE_33__providers_livestock_livestock__["a" /* LivestockProvider */], __WEBPACK_IMPORTED_MODULE_11__services_backButton__["a" /* BackButtonService */]
+                __WEBPACK_IMPORTED_MODULE_6__ionic_native_network__["a" /* Network */], __WEBPACK_IMPORTED_MODULE_10__services_httpService__["a" /* HttpService */],
+                __WEBPACK_IMPORTED_MODULE_34__providers_special_special__["a" /* SpecialProvider */],
+                __WEBPACK_IMPORTED_MODULE_35__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_33__ionic_native_camera__["a" /* Camera */],
+                __WEBPACK_IMPORTED_MODULE_36__providers_farmer_farmer__["a" /* FarmerProvider */],
+                __WEBPACK_IMPORTED_MODULE_37__providers_livestock_livestock__["a" /* LivestockProvider */], __WEBPACK_IMPORTED_MODULE_13__services_backButton__["a" /* BackButtonService */]
             ]
         })
     ], AppModule);
@@ -1681,9 +1769,8 @@ var AppModule = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpecialProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_httpService__ = __webpack_require__(59);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1695,50 +1782,48 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
 /*
  * 专管员provider
  * 包含个人中心资料修改，登录，退出
 */
 var SpecialProvider = (function () {
     /*构造*/
-    function SpecialProvider(http, settingProvider) {
+    function SpecialProvider(http) {
         this.http = http;
-        this.settingProvider = settingProvider;
     }
     /*登录*/
     SpecialProvider.prototype.doLogin = function (username, password) {
         var param = { "mobile": username, "password": password };
-        return this.http.post(this.settingProvider.apiUrl + "/specialManager/login", param, this.settingProvider.httpOptions);
+        return this.http.post("app/specialManager/login", param);
     };
     /*修改身份证*/
     SpecialProvider.prototype.doChangeCertificate = function (cardid) {
         var param = { "cardId": cardid };
-        return this.http.post(this.settingProvider.apiUrl + "/specialManager/update", param, this.settingProvider.httpOptions);
+        return this.http.post("app/specialManager/update", param);
     };
     /*修改密码*/
     SpecialProvider.prototype.doChangePass = function (oldPassword, password, confirmPassword) {
         var param = { "password": password, "oldPassword": oldPassword, "confirmPassword": confirmPassword };
         console.log(param);
-        return this.http.post(this.settingProvider.apiUrl + "/specialManager/updatePassword", param, this.settingProvider.httpOptions);
+        return this.http.post("app/specialManager/updatePassword", param);
     };
     /*Email*/
     SpecialProvider.prototype.doChangeEmail = function (email) {
         var param = { "email": email };
-        return this.http.post(this.settingProvider.apiUrl + "/specialManager/update", param, this.settingProvider.httpOptions);
+        return this.http.post("app/specialManager/update", param);
     };
     /*修改名称*/
     SpecialProvider.prototype.doChangeName = function (name) {
         var param = { "name": name };
-        return this.http.post(this.settingProvider.apiUrl + "/specialManager/update", param, this.settingProvider.httpOptions);
+        return this.http.post("app/specialManager/update", param);
     };
     /*注销*/
     SpecialProvider.prototype.logout = function () {
-        return this.http.get(this.settingProvider.apiUrl + "/specialManager/logout", this.settingProvider.httpOptions);
+        return this.http.get("app/specialManager/logout", {});
     };
     SpecialProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__["a" /* SettingProvider */]])
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_httpService__["a" /* HttpService */]])
     ], SpecialProvider);
     return SpecialProvider;
 }());
@@ -1753,12 +1838,12 @@ var SpecialProvider = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tabs_tabs__ = __webpack_require__(234);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tabs_mtabs__ = __webpack_require__(327);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tabs_tabs__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tabs_mtabs__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_special_special__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_backButton__ = __webpack_require__(21);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1830,6 +1915,7 @@ var LoginPage = (function () {
             this.specialProvider.doLogin(this.username, this.password).subscribe(function (res) {
                 if (res["code"] == 10000) {
                     _this.storage.set("user", res["data"]);
+                    _this.settingProvider.loginstate = true;
                     if (_this.remember) {
                         _this.storage.set("remember", { "mobile": _this.username, "password": _this.password });
                     }
@@ -1838,6 +1924,7 @@ var LoginPage = (function () {
                     }
                     _this.settingProvider.user = res["data"];
                     _this.settingProvider.cityColumns = res["data"]["areaResult"];
+                    _this.storage.set("cityColumns", _this.settingProvider.cityColumns);
                     if (_this.settingProvider.user.area.level < 5) {
                         _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__tabs_mtabs__["a" /* MTabsPage */]);
                     }
@@ -1846,6 +1933,7 @@ var LoginPage = (function () {
                     }
                 }
                 else {
+                    _this.settingProvider.loginstate = false;
                     _this.settingProvider.presentAlert(res["msg"], '');
                 }
             }, function (err) {
@@ -1867,18 +1955,13 @@ var LoginPage = (function () {
 
 /***/ }),
 
-/***/ 66:
+/***/ 59:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LivestockPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__search_search__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_livestock_livestock__ = __webpack_require__(230);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_backButton__ = __webpack_require__(21);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HttpService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1888,6 +1971,87 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+
+/**
+  httpClient 简单封装类
+  * by ivan
+  ,
+  "proxies": [
+    {
+      "path": "/app",
+      "proxyUrl": "http://47.96.48.160/app"
+    },
+    {
+      "path": "/heartbeat",
+      "proxyUrl": "http://47.96.48.160/heartbeat"
+    }
+  ]
+  * 369191991@qq.com
+**/
+var HttpService = (function () {
+    /*构造函数 依赖注入*/
+    function HttpService(http) {
+        this.http = http;
+        this.access_token = "";
+        /*服务器通讯地址*/
+        this.apiUrl = "http://47.96.48.160";
+        this.httpOptions = {
+            headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["d" /* HttpHeaders */]({
+                'Content-Type': 'application/json',
+            })
+        };
+        console.log("Module Http Service");
+    }
+    /*get 请求*/
+    HttpService.prototype.get = function (endpoint, params) {
+        return this.http.get(this.apiUrl + '/' + endpoint, this.encodeHttpParams(params));
+    };
+    /*post请求*/
+    HttpService.prototype.post = function (endpoint, params) {
+        return this.http.post(this.apiUrl + '/' + endpoint, this.encodeHttpParams(params));
+    };
+    HttpService.prototype.encodeHttpParams = function (params) {
+        if (!params)
+            return null;
+        return params;
+    };
+    HttpService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */]])
+    ], HttpService);
+    return HttpService;
+}());
+
+//# sourceMappingURL=httpService.js.map
+
+/***/ }),
+
+/***/ 66:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LivestockPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__search_search__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_livestock_livestock__ = __webpack_require__(235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_backButton__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__discovery_discovery__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__scan_scan__ = __webpack_require__(130);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
 
 
 
@@ -1921,24 +2085,27 @@ var LivestockPage = (function () {
         if (navParams.data.item != null && navParams.data.type == "farmerSearch") {
             console.log("选择了", navParams.data.item);
             this.settingProvider.ltock.farmId = navParams.data.item.id + "";
-            this.settingProvider.ltock.farmer = navParams.data.item;
+            this.settingProvider.farmername = navParams.data.item.name;
             console.log("当前的牲畜数据是", this.settingProvider.ltock);
         }
         //选择扫描结果
         if (navParams.data.type == "scan") {
+            console.log("选择扫描结果", navParams.data.item);
             this.settingProvider.ltock.code = navParams.data.item;
             this.livestockProvider.doSearchLivestock(this.settingProvider.ltock.code).subscribe(function (res) {
                 var stock = res["data"];
-                console.log(stock.length);
-                if (stock.length == 0) {
+                console.log(stock);
+                if (stock == null) {
                     console.log(1);
-                    _this.settingProvider.ltock.farmer = null;
+                    _this.settingProvider.farmername = "";
                     _this.clearLtock();
                     _this.settingProvider.ltockinsert = true;
                 }
                 else {
                     console.log(2);
-                    console.log("牲畜查询", stock, _this.settingProvider.ltock.farmer.name);
+                    console.log("牲畜查询", stock, _this.settingProvider.farmername);
+                    stock.slaughterDate = _this.settingProvider.formatDate(new Date(_this.settingProvider.ltock.slaughterDate), false);
+                    console.log("stock", stock);
                     _this.settingProvider.ltock = stock;
                     _this.settingProvider.ltockinsert = false;
                 }
@@ -1957,23 +2124,22 @@ var LivestockPage = (function () {
     LivestockPage.prototype.clearLtock = function () {
         var code = this.settingProvider.ltock.code;
         this.settingProvider.ltock = {
-            code: '',
+            code: "",
             farmId: "0",
-            motherAddress: '',
-            epidemicIds: '',
-            slaughterAddress: '',
-            slaughterRemark: '',
-            saleFlow: '',
-            epidemicType: '',
-            epidemicProduct: '',
-            epidemicBatch: '',
+            motherAddress: "",
+            epidemicIds: "",
+            slaughterAddress: "",
+            slaughterRemark: "",
+            saleFlow: "",
+            epidemicType: "",
+            epidemicProduct: "",
+            epidemicBatch: "",
             healthy: 1,
             insureState: 2,
             type: "1",
             insureId: "",
             accidentDead: "1", sex: "1",
-            slaughterDate: this.settingProvider.formatDate(new Date().getTime()),
-            farmer: ""
+            slaughterDate: this.settingProvider.formatDate(new Date().getTime())
         };
         this.settingProvider.ltock.code = code;
     };
@@ -1983,7 +2149,7 @@ var LivestockPage = (function () {
         if (this.settingProvider.ltock.code == "") {
             this.settingProvider.presentAlert("牲畜编号不能为空", '');
         }
-        else if (this.settingProvider.ltock.farmer.name == "") {
+        else if (this.settingProvider.farmername == "") {
             this.settingProvider.presentAlert("请输入农户", '');
         }
         else if (this.settingProvider.ltock.motherAddress == "") {
@@ -2005,9 +2171,16 @@ var LivestockPage = (function () {
             this.settingProvider.ltock.epidemicIds = this.settingProvider.ltock.epidemicIds.toString();
             this.settingProvider.ltock.slaughterDate = this.settingProvider.ltock.slaughterDate + ' 00:00:00';
             console.log(this.settingProvider.ltock);
+            //delete this.settingProvider.ltock["farmer"];
             this.livestockProvider.doAddLivestock(this.settingProvider.ltock).subscribe(function (res) {
                 if (res["code"] == 10000) {
+                    console.log("更改扫描结果的记录信息");
+                    _this.changeState(_this.settingProvider.ltock.code);
                     _this.settingProvider.presentAlert("新增成功", '');
+                    if (_this.countState() > 0)
+                        _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__discovery_discovery__["a" /* DiscoveryPage */], { data: _this.settingProvider.scanResult });
+                    else
+                        _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_8__scan_scan__["a" /* ScanPage */]);
                 }
                 else {
                     _this.settingProvider.presentAlert(res["msg"], '');
@@ -2024,9 +2197,16 @@ var LivestockPage = (function () {
         this.settingProvider.ltock.epidemicIds = this.settingProvider.ltock.epidemicIds.toString();
         this.settingProvider.ltock.slaughterDate = this.settingProvider.ltock.slaughterDate + ' 00:00:00';
         console.log(this.settingProvider.ltock);
+        //delete this.settingProvider.ltock["farmer"];
         this.livestockProvider.doEditLivestock(this.settingProvider.ltock).subscribe(function (res) {
             if (res["code"] == 10000) {
+                console.log("更改扫描结果的记录信息");
+                _this.changeState(_this.settingProvider.ltock.code);
                 _this.settingProvider.presentAlert("修改成功", '');
+                if (_this.countState() > 0)
+                    _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__discovery_discovery__["a" /* DiscoveryPage */], { data: _this.settingProvider.scanResult });
+                else
+                    _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_8__scan_scan__["a" /* ScanPage */]);
             }
             else {
                 _this.settingProvider.presentAlert(res["msg"], '');
@@ -2044,50 +2224,58 @@ var LivestockPage = (function () {
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE
         };
-        this.isScan = true;
-        var msgbox = this.settingProvider.presentAlert("扫描中,请在30秒内扫描... ", '关闭', [
-            {
-                text: '确定',
-                handler: function () {
-                    var navTransition = msgbox.dismiss();
-                    navTransition.then(function () {
-                        _this.isScan = false;
-                    });
-                    return false;
-                }
-            }
-        ]);
-        console.log(msgbox);
-        setTimeout(function () {
-            if (_this.isScan == true) {
-                msgbox.dismiss();
-                _this.settingProvider.presentAlert("扫描超时，请确认后重试", "");
-            }
-        }, 30000);
+        alert("你按了保险标");
         this.camera.getPicture(options).then(function (res) {
             //json转数组
             var c = res;
             var d = JSON.parse(c);
             if (d.code == 10000) {
-                msgbox.dismiss();
-                _this.isScan == false;
-                if (d.data.length > 0) {
-                    //alert(d.data);
-                    _this.settingProvider.ltock.insureId = d.data;
-                }
-                else {
-                    _this.settingProvider.presentAlert(d.msg, "扫描不到任何信息");
-                }
+                _this.settingProvider.ltock.insureId = _this.format(d.data);
             }
-            else {
+            else if (d.code == 9998) {
+                _this.settingProvider.presentAlert(d.msg, "");
+            }
+            else if (d.code == 9999) {
                 _this.settingProvider.presentAlert(d.msg, "");
             }
         }, function (err) {
         });
     };
+    LivestockPage.prototype.format = function (rows) {
+        if (rows.length == 1) {
+            return rows[0];
+        }
+        else {
+            return "";
+        }
+    };
+    LivestockPage.prototype.changeState = function (row) {
+        for (var i = 0; i < this.settingProvider.scanResult.length; i++) {
+            console.log(this.settingProvider.scanResult[i].code);
+            console.log(row);
+            if (this.settingProvider.scanResult[i].code.trim() == row.trim()) {
+                console.log("已操作", row);
+                this.settingProvider.scanResult[i].msg = "已操作";
+            }
+        }
+    };
+    LivestockPage.prototype.countState = function () {
+        var count = this.settingProvider.scanResult.length;
+        for (var i = 0; i < this.settingProvider.scanResult.length; i++) {
+            if (this.settingProvider.scanResult[i].msg == "已操作") {
+                count = count - 1;
+            }
+        }
+        return count;
+    };
     /*自定义返回键*/
     LivestockPage.prototype.goBack = function () {
-        this.navCtrl.pop(); // remember to put this to add the back button behavior
+        console.log(this.appCtrl.getRootNav().root);
+        //t.select(2);
+        //this.tabRef.select(2);
+        // this.appCtrl.getRootNav().select(2);
+        this.navCtrl.setRoot(this.appCtrl.getRootNav().root);
+        //this.navCtrl.push(TabPage);  // remember to put this to add the back button behavior
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
@@ -2095,7 +2283,7 @@ var LivestockPage = (function () {
     ], LivestockPage.prototype, "tabRef", void 0);
     LivestockPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-livestock',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/livestock/livestock.html"*/'<!--\n  Generated template for the CertificatePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>牲畜信息</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content padding>\n    <ion-list>\n\n    <ion-item class="item">\n      <ion-label fixed> * 牲畜编号</ion-label>\n      <ion-input type="text" required placeholder="请输入牲畜编号" [(ngModel)]="this.settingProvider.ltock.code" readonly="true"  ></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 农户</ion-label>\n\n      <ion-input type="text" (ionFocus)="doSearch()" readonly="true" required placeholder="按农户名称或者4位身份证尾数搜索" [(ngModel)]="this.settingProvider.ltock.farmer.name"></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 行政区域</ion-label>\n      <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId" doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 母体来源</ion-label>\n      <ion-input type="tel" required placeholder="请输入母体来源" [(ngModel)]="this.settingProvider.ltock.motherAddress" ></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed>* 出生时间</ion-label>\n      <ion-datetime displayFormat="YYYY-MM-DD" doneText="确定" cancelText="取消" [(ngModel)]="this.settingProvider.ltock.slaughterDate"></ion-datetime>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 性别</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.sex" okText="确定" cancelText="取消">\n      <ion-option value="1">公</ion-option>\n      <ion-option value="2">母</ion-option>\n    </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>防疫状况</ion-label>\n      <ion-select  multiple="true"  [(ngModel)]="this.settingProvider.ltock.epidemicIds"  okText="确定" cancelText="取消">\n	    <ion-option *ngFor="let item of this.settingProvider.epidemicPrevention" value="{{item.id}}">{{item.name}}</ion-option>\n	    \n	  </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 健康状态</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.healthy" okText="确定" cancelText="取消">\n	    <ion-option value="0">良好</ion-option>\n	    <ion-option value="1">合格</ion-option>\n	    <ion-option value="2">不合格</ion-option>\n	  </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 种类</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.type" okText="确定" cancelText="取消">\n	    <ion-option value="1">猪</ion-option>\n	    <ion-option value="2">牛</ion-option>\n	    <ion-option value="3">羊</ion-option>\n	  </ion-select>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  意外死亡</ion-label>\n      <ion-select name="accidentDead" [(ngModel)]="this.settingProvider.ltock.accidentDead" okText="确定" cancelText="取消">\n	    <ion-option value="1">是</ion-option>\n	    <ion-option value="">否</ion-option>\n	  </ion-select>\n    </ion-item>\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>  投保情况</ion-label>\n      <ion-select [(ngModel)]="this.settingProvider.ltock.insureState" okText="确定" cancelText="取消">\n      <ion-option value="1">投保</ion-option>\n      <ion-option value="2">未投保</ion-option>\n    </ion-select>\n    </ion-item>\n\n\n    <ion-item class="item"  *ngIf="this.settingProvider.ltock.insureState==\'1\'">\n      <ion-label fixed>  投保编号</ion-label>\n      <ion-input type="tel" placeholder="请输入投保编号" readonly="true"  (ionFocus)="doScan()" [(ngModel)]="this.settingProvider.ltock.insureId" ></ion-input>\n      <ion-icon item-end (click)="doScan()" name="qr-scanner"></ion-icon>\n    </ion-item>\n\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>  宰现地点</ion-label>\n          <ion-textarea name="slaughterAddress" placeholder="请输入宰现地点" [(ngModel)]="this.settingProvider.ltock.slaughterAddress"  placeholder=""></ion-textarea>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> 宰现情况</ion-label>\n          <ion-textarea name="slaughterRemark" placeholder="请输入宰现情况" [(ngModel)]="this.settingProvider.ltock.slaughterRemark" placeholder=""></ion-textarea>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>  买卖流向</ion-label>\n          <ion-textarea name="saleFlow" placeholder="请输入买卖流向" [(ngModel)]="this.settingProvider.ltock.saleFlow" placeholder=""></ion-textarea>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  防疫类型</ion-label>\n          <ion-textarea style="height:10rem;" placeholder="请输入防疫类型" name="epidemicType" [(ngModel)]="this.settingProvider.ltock.epidemicType"  placeholder="逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>  防疫供应商</ion-label>\n          <ion-textarea style="height:10rem;"  name="epidemicProduct" [(ngModel)]="this.settingProvider.ltock.epidemicProduct"  placeholder="请输入防疫供应商，以逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>  生产批次</ion-label>\n          <ion-textarea style="height:10rem;" name="epidemicBatch" [(ngModel)]="this.settingProvider.ltock.epidemicBatch"  placeholder="请输入生产批次，以逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n    <div class="blank"></div>\n  	<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button  *ngIf="this.settingProvider.ltockinsert" class="balanced" (click)="doAdd()" ion-button block >\n       保存\n    </button>\n    <button  *ngIf="!this.settingProvider.ltockinsert" class="balanced" (click)="doEdit()" ion-button block >\n       更新\n    </button>\n    <button class="balanced" (click)="clearLtock()" ion-button block>\n      重置\n    </button>\n  </div>\n    </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/livestock/livestock.html"*/,
+            selector: 'page-livestock',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/livestock/livestock.html"*/'<!--\n  Generated template for the CertificatePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header no-border>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>牲畜信息</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n    <ion-list>\n\n    <ion-item class="item" style="border-top:0px;">\n      <ion-label fixed> * 牲畜编号</ion-label>\n      <ion-input type="text" required placeholder="请输入牲畜编号" [(ngModel)]="this.settingProvider.ltock.code" readonly="true"  ></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 农户</ion-label>\n      <ion-input type="text" (ionFocus)="doSearch()" readonly="true" required placeholder="按农户名称或者4位身份证尾数搜索" [(ngModel)]="this.settingProvider.farmername"></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 行政区域</ion-label>\n      <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId" doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed> * 母体来源</ion-label>\n      <ion-input type="tel" required placeholder="请输入母体来源" [(ngModel)]="this.settingProvider.ltock.motherAddress" ></ion-input>\n    </ion-item>\n    <ion-item class="item">\n      <ion-label fixed>* 出生时间</ion-label>\n      <ion-datetime displayFormat="YYYY-MM-DD" doneText="确定" cancelText="取消" [(ngModel)]="this.settingProvider.ltock.slaughterDate"></ion-datetime>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 性别</ion-label>\n      <ion-select interface="action-sheet" [(ngModel)]="this.settingProvider.ltock.sex" okText="确定" cancelText="取消">\n      <ion-option value="1">公</ion-option>\n      <ion-option value="2">母</ion-option>\n    </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;防疫状况</ion-label>\n      <ion-select  multiple="true"  [(ngModel)]="this.settingProvider.ltock.epidemicIds"  okText="确定" cancelText="取消">\n	    <ion-option *ngFor="let item of this.settingProvider.epidemicPrevention" value="{{item.id}}">{{item.name}}</ion-option>\n	    \n	  </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 健康状态</ion-label>\n      <ion-select interface="action-sheet" [(ngModel)]="this.settingProvider.ltock.healthy" okText="确定" cancelText="取消">\n	    <ion-option value="0">良好</ion-option>\n	    <ion-option value="1">合格</ion-option>\n	    <ion-option value="2">不合格</ion-option>\n	  </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed> * 种类</ion-label>\n      <ion-select interface="action-sheet"  [(ngModel)]="this.settingProvider.ltock.type" okText="确定" cancelText="取消">\n	    <ion-option value="1">猪</ion-option>\n	    <ion-option value="2">牛</ion-option>\n	    <ion-option value="3">羊</ion-option>\n	  </ion-select>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;意外死亡</ion-label>\n      <ion-select interface="action-sheet"  name="accidentDead" [(ngModel)]="this.settingProvider.ltock.accidentDead" okText="确定" cancelText="取消">\n	    <ion-option value="1">是</ion-option>\n	    <ion-option value="">否</ion-option>\n	  </ion-select>\n    </ion-item>\n\n\n\n    <ion-item class="item" >\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;投保情况</ion-label>\n      <ion-select interface="action-sheet"  [(ngModel)]="this.settingProvider.ltock.insureState" okText="确定" cancelText="取消">\n      <ion-option value="1">投保</ion-option>\n      <ion-option value="2">未投保</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item class="item"   *ngIf="this.settingProvider.ltock.insureState==\'1\'">\n        <ion-label fixed item-start>&nbsp;&nbsp;&nbsp;投保编号</ion-label>\n        <ion-input type="tel" placeholder="请输入投保编号" readonly="true" [(ngModel)]="this.settingProvider.ltock.insureId" ></ion-input>\n        <ion-icon item-end (click)="doScan()" name="qr-scanner"></ion-icon>\n    </ion-item>\n\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;宰现地点</ion-label>\n          <ion-textarea name="slaughterAddress" placeholder="请输入宰现地点" [(ngModel)]="this.settingProvider.ltock.slaughterAddress"  placeholder=""></ion-textarea>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;宰现情况</ion-label>\n      <ion-select interface="action-sheet"  [(ngModel)]="this.settingProvider.ltock.slaughterRemark" okText="确定" cancelText="取消">\n      <ion-option value="是">是</ion-option>\n      <ion-option value="否">否</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item class="item">\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;买卖流向</ion-label>\n          <ion-textarea name="saleFlow" placeholder="请输入买卖流向" [(ngModel)]="this.settingProvider.ltock.saleFlow" placeholder=""></ion-textarea>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;防疫类型</ion-label>\n          <ion-textarea style="height:10rem;" placeholder="请输入防疫类型" name="epidemicType" [(ngModel)]="this.settingProvider.ltock.epidemicType"  placeholder="请输入防疫类型,逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n\n    <ion-item class="item">\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;防疫供应商</ion-label>\n          <ion-textarea style="height:10rem;"  name="epidemicProduct" [(ngModel)]="this.settingProvider.ltock.epidemicProduct"  placeholder="请输入防疫供应商，以逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n    <ion-item class="item">\n      <ion-label fixed>&nbsp;&nbsp;&nbsp;生产批次</ion-label>\n          <ion-textarea style="height:10rem;" name="epidemicBatch" [(ngModel)]="this.settingProvider.ltock.epidemicBatch"  placeholder="请输入生产批次，以逗号隔开"></ion-textarea>\n    </ion-item>\n\n\n    <div class="blank"></div>\n  	<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n    <button  *ngIf="this.settingProvider.ltockinsert" class="balanced" (click)="doAdd()" ion-button block >\n       保存\n    </button>\n    <button  *ngIf="!this.settingProvider.ltockinsert" class="balanced" (click)="doEdit()" ion-button block >\n       更新\n    </button>\n    <button class="balanced" (click)="clearLtock()" ion-button block>\n      重置\n    </button>\n  </div>\n    </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/livestock/livestock.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_2__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_4__providers_livestock_livestock__["a" /* LivestockProvider */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_6__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"]])
     ], LivestockPage);
@@ -2112,11 +2300,11 @@ var LivestockPage = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FarmerPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_farmer_farmer__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__map_map__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__map_map__ = __webpack_require__(172);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2150,7 +2338,6 @@ var FarmerPage = (function () {
         this.backButtonService = backButtonService;
         this.appCtrl = appCtrl;
         this.toPage = true;
-        this.infoType = false;
         /*农户对象*/
         this.farmer = {
             name: '',
@@ -2176,10 +2363,8 @@ var FarmerPage = (function () {
         });
         //首页搜索后查看农户
         if (navParams.data.item != null && navParams.data.type == "farmerCat") {
-            console.log("点击了", navParams.data.item, navParams.data.info);
             this.farmer = navParams.data.item;
             if (navParams.data.info == "livestock") {
-                this.infoType = true;
                 this.getStats(this.farmer.id);
             }
             this.toPage = false;
@@ -2187,6 +2372,7 @@ var FarmerPage = (function () {
         else {
             this.toPage = true;
         }
+        /*百度地图*/
         if (navParams.data.address != null && navParams.data.type == "baidu") {
             this.farmer.farmAddress = navParams.data.address;
         }
@@ -2248,17 +2434,13 @@ var FarmerPage = (function () {
             });
         }
     };
-    /*自定义返回键*/
-    FarmerPage.prototype.goBack = function () {
-        this.navCtrl.pop(); // remember to put this to add the back button behavior
-    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
     ], FarmerPage.prototype, "tabRef", void 0);
     FarmerPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-farmer',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/farmer/farmer.html"*/'<!--\n  Generated template for the CertificatePage page.\n  建议使用定位功能，可以让他人更容易找到你\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n<ion-header no-border>\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons  *ngIf="toPage==false" left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title *ngIf="infoType==false">农户信息</ion-title>\n    <ion-title *ngIf="infoType">牲畜信息</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n    <div  *ngIf="toPage">\n\n        <div class="blank"></div>\n        <ion-list>\n          <ion-item class="item" style="border-top:0px;">\n            <ion-label fixed> * 名字</ion-label>\n            <ion-input type="text" [(ngModel)]="farmer.name" ngModel valid  required placeholder="请输入名字"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 手机号码</ion-label>\n            <ion-input type="tel" [(ngModel)]="farmer.mobile" ngModel valid  required placeholder="请输入手机号码"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 行政区域</ion-label>\n            <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId"  doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 身份证号码</ion-label>\n            <ion-input type="text" required [(ngModel)]="farmer.cardId" ngModel valid  placeholder="请输入身份证号码"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 养殖地址</ion-label>\n            <ion-textarea [(ngModel)]="farmer.farmAddress" required ngModel valid  placeholder="请输入养殖地址"></ion-textarea>\n            <button ion-button  item-end block style="width: 40px;display: none" (click)="location()">定位</button>\n          </ion-item>\n        </ion-list>\n        <div class="blank"></div>\n      	<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n        <button class="balanced" ion-button block   (click)="doAdd()" >\n           新增\n        </button>\n      </div>\n    </div>\n\n    <div *ngIf="toPage==false">\n\n               <ion-grid padding *ngIf="infoType==false">\n                  <ion-row class="ion-row">\n                    <ion-col col-4>名字 : </ion-col>\n                    <ion-col col-8>{{farmer.name}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>手机号码 : </ion-col>\n                    <ion-col col-8>{{farmer.mobile}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>身份证号码 : </ion-col>\n                    <ion-col col-8>{{farmer.cardId}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>养殖地址 : </ion-col>\n                    <ion-col col-8>{{farmer.farmAddress}}</ion-col>\n                  </ion-row>\n\n              </ion-grid>\n\n\n             \n              <ion-list *ngIf="infoType==true">\n                <div *ngIf="count>0">\n                <ion-item>\n                  <ion-grid *ngIf="statser.details.length>0"  padding>\n                   <table class="table">\n                      <thead>\n                      <tr>\n                      <th>种类</th>\n                      <th>性别</th>\n                      <th>数量</th>\n                      </tr>\n                      </thead>\n                      <tbody>\n                      <tr *ngFor="let nc of statser.details">\n                      <td>{{nc.typeStr}} </td>\n                      <td><code>{{ nc.sexStr }}</code></td>\n                      <td><code>{{ nc.count }}</code></td>\n                      </tr>\n                      </tbody>\n                    </table>\n                  </ion-grid>\n                </ion-item>\n                </div>\n                <ion-item *ngIf="count==0">\n                <div>没有牲畜信息</div>\n                </ion-item>\n              </ion-list>\n\n            <div class="blank"></div>\n\n    </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/farmer/farmer.html"*/,
+            selector: 'page-farmer',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/farmer/farmer.html"*/'<!--\n  Generated template for the CertificatePage page.\n  建议使用定位功能，可以让他人更容易找到你\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n\n<ion-header no-border>\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons  *ngIf="toPage==false" left>\n      <button ion-button navPop>\n          <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>农户信息</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n    <div  *ngIf="toPage">\n\n        <div class="blank"></div>\n        <ion-list>\n          <ion-item class="item" style="border-top:0px;">\n            <ion-label fixed> * 名字</ion-label>\n            <ion-input type="text" [(ngModel)]="farmer.name" ngModel valid  required placeholder="请输入名字"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 手机号码</ion-label>\n            <ion-input type="tel" [(ngModel)]="farmer.mobile" ngModel valid  required placeholder="请输入手机号码"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 行政区域</ion-label>\n            <ion-multi-picker id="cities" [(ngModel)]="this.settingProvider.user.areaId"  doneText="确定" cancelText="取消" item-content [multiPickerColumns]="this.settingProvider.cityColumns"></ion-multi-picker>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 身份证号码</ion-label>\n            <ion-input type="text" required [(ngModel)]="farmer.cardId" ngModel valid  placeholder="请输入身份证号码"></ion-input>\n          </ion-item>\n          <ion-item class="item">\n            <ion-label fixed> * 养殖地址</ion-label>\n            <ion-textarea [(ngModel)]="farmer.farmAddress" required ngModel valid  placeholder="请输入养殖地址"></ion-textarea>\n            <button ion-button  item-end block style="width: 40px;display: none" (click)="location()">定位</button>\n          </ion-item>\n        </ion-list>\n        <div class="blank"></div>\n      	<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n        <button class="balanced" ion-button block   (click)="doAdd()" >\n           新增\n        </button>\n      </div>\n    </div>\n\n    <div *ngIf="toPage==false">\n\n               <ion-grid padding>\n                  <ion-row class="ion-row">\n                    <ion-col col-4>名字 : </ion-col>\n                    <ion-col col-8>{{farmer.name}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>手机号码 : </ion-col>\n                    <ion-col col-8>{{farmer.mobile}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>身份证号码 : </ion-col>\n                    <ion-col col-8>{{farmer.cardId}}</ion-col>\n                  </ion-row>\n\n                  <ion-row class="ion-row">\n                    <ion-col col-4>养殖地址 : </ion-col>\n                    <ion-col col-8>{{farmer.farmAddress}}</ion-col>\n                  </ion-row>\n\n              </ion-grid>\n\n\n             \n              <ion-list style="border-top: 1px solid #dededec9;">\n                <div *ngIf="count>0">\n                <ion-item>\n                  <ion-grid *ngIf="statser.details.length>0"  padding>\n                   <table class="table">\n                      <thead>\n                      <tr>\n                      <th>种类</th>\n                      <th>性别</th>\n                      <th>数量</th>\n                      </tr>\n                      </thead>\n                      <tbody>\n                      <tr *ngFor="let nc of statser.details">\n                      <td>{{nc.typeStr}} </td>\n                      <td><code>{{ nc.sexStr }}</code></td>\n                      <td><code>{{ nc.count }}</code></td>\n                      </tr>\n                      </tbody>\n                    </table>\n                  </ion-grid>\n                </ion-item>\n                </div>\n                <ion-item *ngIf="count==0">\n                <div>没有牲畜信息</div>\n                </ion-item>\n              </ion-list>\n\n            <div class="blank"></div>\n\n    </div>\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/farmer/farmer.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_4__providers_farmer_farmer__["a" /* FarmerProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"]])
     ], FarmerPage);
@@ -2269,16 +2451,20 @@ var FarmerPage = (function () {
 
 /***/ }),
 
-/***/ 698:
+/***/ 702:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(367);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_network__ = __webpack_require__(371);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(372);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_login_login__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_setting_setting__ = __webpack_require__(15);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2293,20 +2479,70 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
+
 var MyApp = (function () {
-    function MyApp(platform, statusBar, splashScreen) {
-        this.rootPage = __WEBPACK_IMPORTED_MODULE_4__pages_login_login__["a" /* LoginPage */];
+    function MyApp(storage, settingProvider, platform, statusBar, splashScreen, network, loadingCtrl) {
+        var _this = this;
+        this.storage = storage;
+        this.settingProvider = settingProvider;
+        this.network = network;
+        this.loadingCtrl = loadingCtrl;
         platform.ready().then(function () {
-            // Okay, so the platform is ready and our plugins are available.
-            // Here you can do any higher level native things you might need.
+            /*从缓存里面读取登录信息*/
+            _this.storage.get('user').then(function (val) {
+                if (val != null)
+                    _this.settingProvider.user = val;
+            });
+            /*从缓存里面读取区域信息*/
+            _this.storage.get('cityColumns').then(function (val) {
+                if (val != null)
+                    _this.settingProvider.cityColumns = val;
+            });
+            /*选择跳转页面*/
+            _this.settingProvider.getheartbeat().subscribe(function (res) {
+                if (res["code"] === 10005) {
+                    if (_this.settingProvider.loginstate == true) {
+                        _this.rootPage = __WEBPACK_IMPORTED_MODULE_6__pages_login_login__["a" /* LoginPage */];
+                    }
+                }
+                else {
+                    _this.settingProvider.loginstate = true;
+                    _this.rootPage = __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__["a" /* TabsPage */];
+                }
+            });
             statusBar.show();
             splashScreen.hide();
+            _this.checkNetwork();
         });
     }
+    /*检测网络，若未连接网络，给出提示*/
+    MyApp.prototype.checkNetwork = function () {
+        var _this = this;
+        if (this.network.type === 'unknown') {
+            console.log('This is a unknown network, please be careful!');
+        }
+        else if (this.network.type === 'none') {
+            console.log('none network!');
+            this.loader = this.loadingCtrl.create({
+                content: "当前网络不可用，请检查网络设置！"
+            });
+            this.loader.present();
+            setTimeout(function () {
+                if (_this.loader)
+                    _this.loader.dismiss();
+            }, 5000);
+        }
+        else {
+            console.log('we got a ' + this.network.type + ' connection, woohoo!');
+        }
+    };
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/app/app.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__ionic_storage__["b" /* Storage */], __WEBPACK_IMPORTED_MODULE_8__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_network__["a" /* Network */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"]])
     ], MyApp);
     return MyApp;
 }());
@@ -2315,13 +2551,13 @@ var MyApp = (function () {
 
 /***/ }),
 
-/***/ 699:
+/***/ 703:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextAvatarDirective; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_generator__ = __webpack_require__(700);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color_generator__ = __webpack_require__(704);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2372,7 +2608,7 @@ var TextAvatarDirective = (function () {
 
 /***/ }),
 
-/***/ 700:
+/***/ 704:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2402,7 +2638,7 @@ var ColorGenerator = (function () {
 
 /***/ }),
 
-/***/ 701:
+/***/ 705:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2448,19 +2684,19 @@ var ValidDirective = (function () {
 
 /***/ }),
 
-/***/ 702:
+/***/ 706:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyHttpInterceptor; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_throw__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_throw__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_throw___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_throw__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_login_login__ = __webpack_require__(45);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2493,7 +2729,7 @@ var MyHttpInterceptor = (function () {
         var ok;
         var pattern = new RegExp('specialManager/epidemicPrevention/queryByArea/[0-9]+$', 'ig');
         var patternheartbeat = new RegExp('heartbeat/special_manager', 'ig');
-        var patterncount = new RegExp('specialManager/farmer/count?areaId=[0-9]+$', 'ig');
+        var patterncount = new RegExp('specialManager/farmer/count(.*)', 'ig');
         if (req instanceof __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["e" /* HttpRequest */]) {
             if (pattern.test(req.url) == false && patternheartbeat.test(req.url) == false && patterncount.test(req.url) == false) {
                 console.log("弹出，请求中，请等待...");
@@ -2534,9 +2770,66 @@ var MyHttpInterceptor = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FarmerProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_httpService__ = __webpack_require__(59);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/*
+  农户provider
+*/
+var FarmerProvider = (function () {
+    function FarmerProvider(http) {
+        this.http = http;
+        this.type = "'farmerinfo'";
+    }
+    /*农户搜索*/
+    FarmerProvider.prototype.farmerSearch = function (keyword, page) {
+        if (page === void 0) { page = 1; }
+        //limit=20&size=1&areaId=22&search=测试
+        return this.http.get("app/specialManager/farmer/list?limit=6&search=" + keyword + "&page=" + page, {});
+    };
+    /*添加农户*/
+    FarmerProvider.prototype.doAddFarmer = function (data) {
+        return this.http.post("app/specialManager/farmer/add", data);
+    };
+    /* 农户中的牲畜统计*/
+    FarmerProvider.prototype.getStatsFarmer = function (param) {
+        return this.http.get("app/specialManager/livestock/group?" + param, {});
+    };
+    /* 区域中农户的统计*/
+    FarmerProvider.prototype.getStatsAreaFarmer = function (param) {
+        return this.http.get("app/specialManager/farmer/count?" + param, {});
+    };
+    FarmerProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_httpService__["a" /* HttpService */]])
+    ], FarmerProvider);
+    return FarmerProvider;
+}());
+
+//# sourceMappingURL=farmer.js.map
+
+/***/ }),
+
+/***/ 93:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DiscoveryPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__livestock_livestock__ = __webpack_require__(66);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2549,53 +2842,81 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-/*
-  农户provider
-*/
-var FarmerProvider = (function () {
-    function FarmerProvider(http, settingProvider) {
-        this.http = http;
+
+
+/**
+ * Generated class for the DiscoveryPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var DiscoveryPage = (function () {
+    function DiscoveryPage(appCtrl, navCtrl, navParams, settingProvider, platform, backButtonService) {
+        var _this = this;
+        this.appCtrl = appCtrl;
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
         this.settingProvider = settingProvider;
-        this.type = "'farmerinfo'";
+        this.platform = platform;
+        this.backButtonService = backButtonService;
+        /*选中对象*/
+        this.sel = null;
+        this.operate = "operate2";
+        platform.ready().then(function () {
+            _this.backButtonService.registerBackButtonAction(_this.tabRef);
+        });
+        if (this.settingProvider.scanResult.length == 0) {
+            this.msg = "扫描不到任何信息";
+        }
+        else {
+            this.msg = "";
+        }
+        /*刷新页面内容*/
+        if (navParams.data.data != null) {
+            console.log("刷新扫描内容");
+            this.settingProvider.scanResult = navParams.data.data;
+        }
     }
-    /*农户搜索*/
-    FarmerProvider.prototype.farmerSearch = function (keyword, page) {
-        if (page === void 0) { page = 1; }
-        //limit=20&size=1&areaId=22&search=测试
-        return this.http.get(this.settingProvider.apiUrl + "/specialManager/farmer/list?limit=6&search=" + keyword + "&page=" + page, this.settingProvider.httpOptions);
+    /*选择*/
+    DiscoveryPage.prototype.selectItem = function (item) {
+        console.log("你选择了", item);
+        this.sel = item;
     };
-    /*添加农户*/
-    FarmerProvider.prototype.doAddFarmer = function (data) {
-        return this.http.post(this.settingProvider.apiUrl + "/specialManager/farmer/add", data, this.settingProvider.httpOptions);
+    /*选择跳转*/
+    DiscoveryPage.prototype.goto = function () {
+        if (this.sel !== null) {
+            this.appCtrl.getRootNav().push(__WEBPACK_IMPORTED_MODULE_4__livestock_livestock__["a" /* LivestockPage */], { item: this.sel, type: "scan" });
+        }
+        else {
+            this.settingProvider.presentAlert("请选择", "");
+        }
     };
-    /* 农户中的牲畜统计*/
-    FarmerProvider.prototype.getStatsFarmer = function (param) {
-        return this.http.get(this.settingProvider.apiUrl + "/specialManager/livestock/group?" + param, this.settingProvider.httpOptions);
-    };
-    /* 区域中农户的统计*/
-    FarmerProvider.prototype.getStatsAreaFarmer = function (param) {
-        return this.http.get(this.settingProvider.apiUrl + "/specialManager/farmer/count?" + param, this.settingProvider.httpOptions);
-    };
-    FarmerProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_2__setting_setting__["a" /* SettingProvider */]])
-    ], FarmerProvider);
-    return FarmerProvider;
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
+    ], DiscoveryPage.prototype, "tabRef", void 0);
+    DiscoveryPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'page-discovery',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/discovery/discovery.html"*/'<!--\n  Generated template for the DiscoveryPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button navPop>\n	        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>扫描结果</ion-title>\n  </ion-navbar>\n	<ion-toolbar>\n	  <!-- Segment buttons with text -->\n	  <ion-segment [(ngModel)]="operate" color="primary" icon-off="bar-home-off" icon-on="bar-home-on">\n\n	    <ion-segment-button value="operate2">\n	      未操作\n	    </ion-segment-button>\n	    <ion-segment-button value="operate1" >\n	      已操作\n	    </ion-segment-button>\n	  </ion-segment>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content>\n\n\n<div [ngSwitch]="operate">\n\n\n  <div class="blank">{{msg}}</div>\n	<ion-list class="ionlist"  *ngSwitchCase="\'operate1\'">\n		<ion-list radio-group [(ngModel)]="sel">\n		   <div *ngFor="let item of this.settingProvider.scanResult">\n		  <ion-item  *ngIf="item.msg==\'已操作\'" class="item item-block item-ios item-radio">\n		    <ion-label>{{item.code}}  <span style="color: red">{{item.msg}}</span></ion-label>\n		    <ion-radio value="{{item.code}}"></ion-radio>\n		  </ion-item>\n			</div>\n		</ion-list>\n\n		<ion-list>\n			<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n		    <button class="balanced" ion-button block  (click)="goto()">\n		      选择\n		    </button>\n		  </div>\n	    </ion-list>\n   </ion-list>\n\n\n	<ion-list class="ionlist"  *ngSwitchCase="\'operate2\'">\n		<ion-list radio-group [(ngModel)]="sel">\n		  <div *ngFor="let item of this.settingProvider.scanResult">\n		  <ion-item  *ngIf="item.msg==\'未操作\'" class="item item-block item-ios item-radio">\n		    <ion-label>{{item.code}}  <span style="color: red">{{item.msg}}</span></ion-label>\n		    <ion-radio value="{{item.code}}"></ion-radio>\n		  </ion-item>\n			</div>\n		</ion-list>\n\n		<ion-list>\n			<div style="text-align: center; margin-left: 30px; margin-right: 30px;">\n		    <button class="balanced" ion-button block  (click)="goto()">\n		      选择\n		    </button>\n		  </div>\n	    </ion-list>\n   </ion-list>\n \n</div>\n	\n</ion-content>\n'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/discovery/discovery.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["App"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
+    ], DiscoveryPage);
+    return DiscoveryPage;
 }());
 
-//# sourceMappingURL=farmer.js.map
+//# sourceMappingURL=discovery.js.map
 
 /***/ }),
 
-/***/ 91:
+/***/ 94:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SearchPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_backButton__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__livestock_livestock__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__farmer_farmer__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_farmer_farmer__ = __webpack_require__(78);
@@ -2661,6 +2982,9 @@ var SearchPage = (function () {
             console.log("搜索类型", this.navParams.data.searchType);
             this.settingProvider.keyword = item.name;
             this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__livestock_livestock__["a" /* LivestockPage */], { item: item, type: "farmerSearch" });
+        }
+        else if (this.navParams.data.searchType == "homeSearch") {
+            this.showLivestock(item);
         }
     };
     SearchPage.prototype.ionViewDidLoad = function () {
@@ -2736,24 +3060,13 @@ var SearchPage = (function () {
             infiniteScroll.complete();
         }
     };
-    // doRefresh(refresher) {
-    //   console.log('Begin async operation', refresher);
-    //   setTimeout(() => {
-    //     console.log('Async operation has ended');
-    //     refresher.complete();
-    //   }, 2000);
-    // }
-    /*自定义返回键*/
-    SearchPage.prototype.goBack = function () {
-        this.navCtrl.pop(); // remember to put this to add the back button behavior
-    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('myTabs'),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Tabs"])
     ], SearchPage.prototype, "tabRef", void 0);
     SearchPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-search',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/search/search.html"*/'\n<ion-header no-border>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button (click)="goBack()">\n        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>搜索</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="content content-md">\n 	<ion-searchbar [(ngModel)]="this.settingProvider.keyword" placeholder="农户名称、4位身份证尾数"></ion-searchbar>\n 	<button class="balanced" style="width: 100px;position: absolute;right: 0;top: 2px;z-index: 99999;height: 50px;" ion-button block  (click)="doSearch()">\n	      	搜索\n	</button>\n 	\n 	<!--  <ion-refresher (refresh)="doRefresh($event)">\n	    <ion-refresher-content\n	            pullingIcon="arrow-dropdown"\n	            pullingText="下拉刷新"\n	            refreshingSpinner="circles"\n	            refreshingText="刷新中...">\n	    </ion-refresher-content>\n	 </ion-refresher>\n -->\n  	  <ion-list class="ionlist">\n	    <ion-item class="ion-item" *ngFor="let item of result" (click)="selectItem(item)">\n			<button ion-button item-end *ngIf="homeSearch" (click)="showFarmer(item)">农户信息</button>\n			<button ion-button item-end *ngIf="homeSearch" (click)="showLivestock(item)">牲畜信息</button>\n		    <h2>{{ item.name }} </h2>\n	  	      <p>{{ item.mobile }}</p>\n		      <p>{{ item.cardId }}</p>\n	  	      <p>{{ item.farmAddress }}</p>\n		</ion-item>\n	  </ion-list>\n\n\n	  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">\n	    <ion-infinite-scroll-content\n	      loadingSpinner="bubbles"\n	      loadingText="正在努力加载中">\n	    </ion-infinite-scroll-content>\n	  </ion-infinite-scroll>\n\n	  \n</ion-content>'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/search/search.html"*/,
+            selector: 'page-search',template:/*ion-inline-start:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/search/search.html"*/'\n<ion-header no-border>\n\n  <ion-navbar hideBackButton color="primary">\n    <ion-buttons left>\n      <button ion-button navPop>\n	        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n    <ion-title>搜索</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="content content-md">\n	<ion-grid>\n		<ion-row>\n			<ion-col col-10>\n		 	<ion-searchbar [(ngModel)]="this.settingProvider.keyword" placeholder="农户名称、4位身份证尾数"></ion-searchbar>\n		 	</ion-col>\n		 	<ion-col col-2>\n		 	<button class="balanced" style="height: 4.1rem;" ion-button block  (click)="doSearch()">\n			      	搜索\n			</button>\n			</ion-col>\n		</ion-row>\n 	</ion-grid>\n 	<!--  <ion-refresher (refresh)="doRefresh($event)">\n	    <ion-refresher-content\n	            pullingIcon="arrow-dropdown"\n	            pullingText="下拉刷新"\n	            refreshingSpinner="circles"\n	            refreshingText="刷新中...">\n	    </ion-refresher-content>\n	 </ion-refresher>\n -->\n  	  <ion-list class="ionlist">\n	    <ion-item class="ion-item" *ngFor="let item of result" (click)="selectItem(item)">\n		    <h2>{{ item.name }} </h2>\n	  	      <p>{{ item.mobile }}</p>\n		      <p>{{ item.cardId }}</p>\n	  	      <p>{{ item.farmAddress }}</p>\n		</ion-item>\n	  </ion-list>\n\n\n	  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">\n	    <ion-infinite-scroll-content\n	      loadingSpinner="bubbles"\n	      loadingText="正在努力加载中">\n	    </ion-infinite-scroll-content>\n	  </ion-infinite-scroll>\n\n	  \n</ion-content>'/*ion-inline-end:"/Users/zhengchenxiao/Downloads/ionic/trace/src/pages/search/search.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"], __WEBPACK_IMPORTED_MODULE_3__providers_setting_setting__["a" /* SettingProvider */], __WEBPACK_IMPORTED_MODULE_6__providers_farmer_farmer__["a" /* FarmerProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"], __WEBPACK_IMPORTED_MODULE_2__services_backButton__["a" /* BackButtonService */]])
     ], SearchPage);
@@ -2764,5 +3077,5 @@ var SearchPage = (function () {
 
 /***/ })
 
-},[370]);
+},[375]);
 //# sourceMappingURL=main.js.map

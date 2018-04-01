@@ -7,24 +7,42 @@
 <ion-header>
  <ion-navbar hideBackButton color="primary">
     <ion-buttons left>
-      <button ion-button (click)="goBack()">
-        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>
+      <button ion-button navPop>
+	        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>扫描结果</ion-title>
   </ion-navbar>
+	<ion-toolbar>
+	  <!-- Segment buttons with text -->
+	  <ion-segment [(ngModel)]="operate" color="primary" icon-off="bar-home-off" icon-on="bar-home-on">
 
+	    <ion-segment-button value="operate2">
+	      未操作
+	    </ion-segment-button>
+	    <ion-segment-button value="operate1" >
+	      已操作
+	    </ion-segment-button>
+	  </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
-	<div class="blank">{{msg}}</div>
-	<ion-list class="ionlist">
+
+
+<div [ngSwitch]="operate">
+
+
+  <div class="blank">{{msg}}</div>
+	<ion-list class="ionlist"  *ngSwitchCase="'operate1'">
 		<ion-list radio-group [(ngModel)]="sel">
-		  <ion-item *ngFor="let item of all" class="item item-block item-ios item-radio">
-		    <ion-label>{{item.code}}</ion-label>
+		   <div *ngFor="let item of this.settingProvider.scanResult">
+		  <ion-item  *ngIf="item.msg=='已操作'" class="item item-block item-ios item-radio">
+		    <ion-label>{{item.code}}  <span style="color: red">{{item.msg}}</span></ion-label>
 		    <ion-radio value="{{item.code}}"></ion-radio>
 		  </ion-item>
+			</div>
 		</ion-list>
 
 		<ion-list>
@@ -34,5 +52,28 @@
 		    </button>
 		  </div>
 	    </ion-list>
-	  </ion-list>
+   </ion-list>
+
+
+	<ion-list class="ionlist"  *ngSwitchCase="'operate2'">
+		<ion-list radio-group [(ngModel)]="sel">
+		  <div *ngFor="let item of this.settingProvider.scanResult">
+		  <ion-item  *ngIf="item.msg=='未操作'" class="item item-block item-ios item-radio">
+		    <ion-label>{{item.code}}  <span style="color: red">{{item.msg}}</span></ion-label>
+		    <ion-radio value="{{item.code}}"></ion-radio>
+		  </ion-item>
+			</div>
+		</ion-list>
+
+		<ion-list>
+			<div style="text-align: center; margin-left: 30px; margin-right: 30px;">
+		    <button class="balanced" ion-button block  (click)="goto()">
+		      选择
+		    </button>
+		  </div>
+	    </ion-list>
+   </ion-list>
+ 
+</div>
+	
 </ion-content>

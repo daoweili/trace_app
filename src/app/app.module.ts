@@ -4,10 +4,11 @@ import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Network } from '@ionic-native/network';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TextAvatarDirective } from '../directives/text-avatar/text-avatar';
 import { ValidDirective } from '../directives/valid/valid';
-
+import { HttpService } from '../services/httpService';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyHttpInterceptor } from './my-http-interceptor';
 import { BackButtonService } from '../services/backButton';
@@ -22,6 +23,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { MTabsPage } from '../pages/tabs/mtabs';
 import { MapPage } from '../pages/map/map';
 
+import { AboutPage } from '../pages/about/about';
 import { StatsPage } from '../pages/stats/stats';
 import { LoginPage } from '../pages/login/login';
 import { ChgpasswdPage } from '../pages/chgpasswd/chgpasswd';
@@ -30,6 +32,7 @@ import { TruenamePage } from '../pages/truename/truename';
 import { CertificatePage } from '../pages/certificate/certificate';
 import { FarmerPage } from '../pages/farmer/farmer';
 import { SearchPage } from '../pages/search/search';
+import { AnalysisPage } from '../pages/analysis/analysis';
 import { MultiPickerModule } from 'ion-multi-picker';
 import { LivestockPage } from '../pages/livestock/livestock';
 import { Camera } from '@ionic-native/camera';
@@ -48,10 +51,10 @@ import { LivestockProvider } from '../providers/livestock/livestock';
     LoginPage,
     TabsPage,MTabsPage,
     ChgpasswdPage,TruenamePage,MapPage,
-    CertificatePage,
+    CertificatePage,AboutPage,
     EmailPage,FarmerPage,DiscoveryPage,
     SearchPage,LivestockPage,StatsPage,
-    TextAvatarDirective,ValidDirective
+    TextAvatarDirective,ValidDirective,AnalysisPage
   ],
   imports: [
     BrowserModule,
@@ -72,12 +75,12 @@ import { LivestockProvider } from '../providers/livestock/livestock';
     ChgpasswdPage,
     CertificatePage,
     EmailPage,
-    FarmerPage,
+    FarmerPage,AnalysisPage,
     SearchPage,
     LivestockPage,StatsPage,
     PersonPage,TruenamePage,MapPage,
     HomePage,
-    LoginPage,
+    LoginPage,AboutPage,
     TabsPage,MTabsPage,DiscoveryPage
   ],
   providers: [
@@ -88,6 +91,7 @@ import { LivestockProvider } from '../providers/livestock/livestock';
       useClass: MyHttpInterceptor,
       multi: true
     },
+    Network,HttpService,
     SpecialProvider,
     SettingProvider,Camera,
     FarmerProvider,

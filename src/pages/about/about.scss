@@ -1,0 +1,24 @@
+page-about {
+	ion-label[fixed] {
+    -webkit-box-flex: 0;
+    width: 100px;
+    min-width: 100px;
+    max-width: 200px;
+    flex: 0 0 100px;
+	}
+	.item{
+		margin-top: 0rem;
+    	padding-left: 1rem;
+    	padding-right: 1rem;
+    	border-bottom:2px soid #dedede;
+	}
+	.ion-title{
+		margin-top:0.5rem;
+	}
+	.blank{
+		margin-bottom:3rem;
+	}
+	.bar-button-md{
+    	font-size: 2.4rem;
+	}
+}

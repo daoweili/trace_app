@@ -32,6 +32,7 @@ export class ScanPage {
       mediaType: this.camera.MediaType.PICTURE
     }
 
+
     this.settingProvider.keyword="";
 
     this.camera.getPicture(options).then((res) => {
@@ -39,8 +40,13 @@ export class ScanPage {
        let c:string = res;
        let d:any = JSON.parse(c);
        if(d.code == 10000){
-          this.settingProvider.scanResult = d;
-          this.appCtrl.getRootNav().push(DiscoveryPage);
+          this.settingProvider.scanResult = this.format(d.data);
+          if(this.settingProvider.scanResult.length==1){
+              console.log("只有一条",this.settingProvider.scanResult[0]);
+              this.appCtrl.getRootNav().push(LivestockPage,{item:this.settingProvider.scanResult[0].code,type:"scan"});
+          }else{
+            this.appCtrl.getRootNav().push(DiscoveryPage);
+          }
        }else if (d.code == 9998){
           this.settingProvider.presentAlert(d.msg,"");
        } else if(d.code == 9999){
@@ -52,13 +58,30 @@ export class ScanPage {
   }
 
 
+  format(rows:any){
+    let res: any=[];
+    for(var i = 0 ; i < rows.length ; i++){
+        let a:any = {code:"",msg:"未操作"};
+        a.code = rows[i];
+        res.push(a);
+    }
+    return res;
+  }
+
+
   doScan1(){
-     let c:string = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2100016880401580370E48A\",\" E2000016880401580370E48A\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
+     //let c:string = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\",\" E2100016880401580370E48A\",\" E2000016880401580370E48A\",\" E2000016880401580370EC8A\"],\"msg\":\"success\"}";
+     let c:string = "{\"code\":10000,\"data\":[\"E20094C6A0B48148F33C3E05\"],\"msg\":\"success\"}";
      let d:any = JSON.parse(c);
 
        if(d.code == 10000){
-          this.settingProvider.scanResult = d;
-          this.appCtrl.getRootNav().push(DiscoveryPage);
+          this.settingProvider.scanResult = this.format(d.data);
+          if(this.settingProvider.scanResult.length==1){
+              console.log("只有一条",this.settingProvider.scanResult[0]);
+              this.appCtrl.getRootNav().push(LivestockPage,{item:this.settingProvider.scanResult[0].code,type:"scan"});
+          }else{
+            this.appCtrl.getRootNav().push(DiscoveryPage);
+          }
        }else if (d.code == 9998){
           this.settingProvider.presentAlert(d.msg,"");
        } else if(d.code == 9999){

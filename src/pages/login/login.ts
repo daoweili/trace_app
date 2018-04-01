@@ -62,6 +62,7 @@ export class LoginPage {
         this.specialProvider.doLogin(this.username,this.password).subscribe((res) => {
           if(res["code"] == 10000){
                this.storage.set("user",res["data"]);
+               this.settingProvider.loginstate = true;
                if(this.remember){
                   this.storage.set("remember",{"mobile":this.username,"password":this.password});
                }else{
@@ -69,6 +70,7 @@ export class LoginPage {
                }
                this.settingProvider.user = res["data"];
                this.settingProvider.cityColumns = res["data"]["areaResult"];
+               this.storage.set("cityColumns",this.settingProvider.cityColumns);
                if(this.settingProvider.user.area.level < 5 ){
                   this.navCtrl.push(MTabsPage);
                }else{
@@ -76,6 +78,7 @@ export class LoginPage {
                }
                
            }else{
+              this.settingProvider.loginstate = false;
               this.settingProvider.presentAlert(res["msg"],'');
            }
         }, (err) => {

@@ -2,10 +2,9 @@ import { HttpClient ,HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { AlertController,LoadingController } from 'ionic-angular';
-
+import { HttpService } from '../../services/httpService';
 /*
   Generated class for the SettingProvider provider.
-
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
@@ -15,8 +14,9 @@ export class SettingProvider {
    /*******************************************
    * 全局对象定义
    ******************************************/
+   /*扫描结果*/
    /*心跳间隔时间 秒*/
-   heartbeat = 1000 * 30;
+   heartbeat = 1000 * 10;
    /* 是否已经登录 */
    loginstate:boolean = false;
    /*登陆用户信息*/
@@ -24,19 +24,18 @@ export class SettingProvider {
    /*行政列表*/
 
    cityColumns: any[];
-   /*服务器通讯地址*/
-   apiUrl :string ="http://localhost:8100/app";
+   
    /*根据行政区域存储防疫类型*/
    epidemicPrevention :Object;
    keyword :string ="";
    /*扫描结果*/
-   scanResult = "";
+   scanResult: any=[];
    /*是否插入牲畜*/
    ltockinsert:boolean = true;
    /*loading*/
    loading;
    /*时间格式*/
-   formatDate = ( time: any ) => {
+   formatDate = ( time: any ,date:boolean = true) => {
           const Dates = new Date( time );
           const year: number = Dates.getFullYear();
           const month: any = ( Dates.getMonth() + 1 ) < 10 ? '0' + ( Dates.getMonth() + 1 ) : ( Dates.getMonth() + 1 );
@@ -44,46 +43,43 @@ export class SettingProvider {
           const hours:any = Dates.getHours();
           const min:any = Dates.getMinutes();
           const seconds:any = Dates.getSeconds();
-          return year + '-' + month + '-' + day + " " + hours +":" + min + ":"+seconds;
+          let str:string = "";
+          if ( date == true) {
+             str =  year + '-' + month + '-' + day + " " + hours +":" + min + ":"+seconds;
+           } else {
+             str = year + '-' + month + '-' + day ;
+           }
+           return str;
+         
     };
+    /*农户名 临时用*/
+    farmername="";
    /*牲畜*/
    ltock:any = {
       code:"",
       farmId:"0",
-      motherAddress:'',
-      epidemicIds:'',
-      slaughterAddress:'',
-      slaughterRemark:'',
-      saleFlow:'',
-      epidemicType:'',
-      epidemicProduct:'',
-      epidemicBatch:'',
+      motherAddress:"",
+      epidemicIds:"",
+      slaughterAddress:"",
+      slaughterRemark:"",
+      saleFlow:"",
+      epidemicType:"",
+      epidemicProduct:"",
+      epidemicBatch:"",
       healthy:1,
       insureState:2,
       type:"1",
       insureId:"1",
-      farmer:"",
       accidentDead:"1",
       sex:"1",
       slaughterDate : this.formatDate( new Date().getTime() )
    };
    
-    /* http请求头设置 */
-   httpOptions:Object = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        })
-   }; 
-
 
    /*构造函数*/
-   constructor(public http: HttpClient,public alertCtrl:AlertController,public loadingCtrl:LoadingController) {
+   constructor(public http: HttpService,public alertCtrl:AlertController,public loadingCtrl:LoadingController) {
 
    }
-
-
-   
-
 
    /******************************************
    * 公用方法
@@ -120,12 +116,12 @@ export class SettingProvider {
 
    /* 获取行政区域 */
    getEpidemicPrevention(areaid){
-     return this.http.get(this.apiUrl+"/specialManager/epidemicPrevention/queryByArea/"+areaid,this.httpOptions);
+     return this.http.get("app/specialManager/epidemicPrevention/queryByArea/"+areaid,{});
    }
 
    /* heartbeat */
    getheartbeat(){
-      return this.http.get("http://47.96.48.160/heartbeat/special_manager",this.httpOptions);
+      return this.http.get("heartbeat/special_manager",{});
    }
    
 }

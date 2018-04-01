@@ -8,12 +8,11 @@
 <ion-header no-border>
   <ion-navbar hideBackButton color="primary">
     <ion-buttons  *ngIf="toPage==false" left>
-      <button ion-button (click)="goBack()">
-        <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>
+      <button ion-button navPop>
+          <ion-icon class="customIcon" name="ios-arrow-back-outline"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title *ngIf="infoType==false">农户信息</ion-title>
-    <ion-title *ngIf="infoType">牲畜信息</ion-title>
+    <ion-title>农户信息</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -55,7 +54,7 @@
 
     <div *ngIf="toPage==false">
 
-               <ion-grid padding *ngIf="infoType==false">
+               <ion-grid padding>
                   <ion-row class="ion-row">
                     <ion-col col-4>名字 : </ion-col>
                     <ion-col col-8>{{farmer.name}}</ion-col>
@@ -80,7 +79,7 @@
 
 
              
-              <ion-list *ngIf="infoType==true">
+              <ion-list style="border-top: 1px solid #dededec9;">
                 <div *ngIf="count>0">
                 <ion-item>
                   <ion-grid *ngIf="statser.details.length>0"  padding>

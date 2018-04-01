@@ -1,5 +1,5 @@
 import { Component ,ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams ,Platform ,Tabs} from 'ionic-angular';
+import { IonicPage, NavController, NavParams ,Platform ,Tabs,App} from 'ionic-angular';
 import { BackButtonService } from '../../services/backButton';
 
 import { SettingProvider } from "../../providers/setting/setting";
@@ -21,49 +21,36 @@ export class DiscoveryPage {
   @ViewChild('myTabs') tabRef: Tabs;
 	/*搜索结果提示*/
   msg: string;
-  /*搜索内容*/
-  all: any=[];
   /*选中对象*/
   sel: any = null;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,public settingProvider:SettingProvider,private platform:Platform,private backButtonService:BackButtonService) {
+  operate:string = "operate2";
+  constructor(public appCtrl:App,public navCtrl: NavController, public navParams: NavParams,public settingProvider:SettingProvider,private platform:Platform,private backButtonService:BackButtonService) {
       platform.ready().then(() => {
         this.backButtonService.registerBackButtonAction(this.tabRef);
       });	  
-
-    	let res:any = this.settingProvider.scanResult;
-      console.log("result",res,"size",res.data.length);
-      if (res.code == 10000 && res.data.length > 0){
-          for(var i = 0 ; i < res.data.length ; i++){
-              let a:any = {code:""};
-              a.code = res.data[i];
-              console.log("a",a);
-              this.all.push(a);
-          }
-      } else if (res.code == 10000 && res.data.length == 0){
+      if ( this.settingProvider.scanResult.length == 0 ){
         this.msg = "扫描不到任何信息";
       } else {
-        this.msg = res.msg;
+        this.msg = "";
+      }
+      /*刷新页面内容*/
+      if( navParams.data.data != null){
+          console.log("刷新扫描内容");
+          this.settingProvider.scanResult = navParams.data.data;
       }
   	
   }
   /*选择*/
   selectItem(item){
-  	  console.log("你选择了",item.code);
+  	  console.log("你选择了",item);
       this.sel = item;
   }
   /*选择跳转*/
   goto(){
-      console.log(this.sel);
       if(this.sel !== null){
-        this.navCtrl.push(LivestockPage,{item:this.sel,type:"scan"});
+        this.appCtrl.getRootNav().push(LivestockPage,{item:this.sel,type:"scan"});
       }else{
         this.settingProvider.presentAlert("请选择","");
       }
-  }
-  
-  /*自定义返回键*/
-  goBack(){
-    this.navCtrl.pop();  // remember to put this to add the back button behavior
   }
 }

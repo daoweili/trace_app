@@ -1,12 +1,12 @@
 import { Component ,ViewChild} from '@angular/core';
-import { NavController, IonicPage ,App,Platform,Tabs} from 'ionic-angular';
+import { NavController, IonicPage ,App,Platform,Tabs,Events} from 'ionic-angular';
 import { Observable } from "rxjs";
 import { BackButtonService } from '../../services/backButton';
 
 import { ChgpasswdPage } from '../chgpasswd/chgpasswd';
 import { EmailPage } from '../email/email';
 import { TruenamePage } from '../truename/truename';
-
+import { AboutPage } from '../about/about';
 import { CertificatePage } from '../certificate/certificate';
 import 'rxjs/Rx';
 
@@ -23,7 +23,7 @@ export class PersonPage {
   @ViewChild("header") header;
   @ViewChild('myTabs') tabRef: Tabs;
 
-  constructor(public navCtrl: NavController,public appCtrl: App,public specialProvider:SpecialProvider,public settingProvider:SettingProvider,private platform:Platform,private backButtonService:BackButtonService) {
+  constructor(public events:Events,public navCtrl: NavController,public appCtrl: App,public specialProvider:SpecialProvider,public settingProvider:SettingProvider,private platform:Platform,private backButtonService:BackButtonService) {
 	    platform.ready().then(() => {
         this.backButtonService.registerBackButtonAction(this.tabRef);
       });
@@ -60,13 +60,16 @@ export class PersonPage {
   doChgPassword(){
       this.appCtrl.getRootNav().push(ChgpasswdPage);
   }
-
+  doAbout(){
+      this.appCtrl.getRootNav().push(AboutPage);
+  }
   doOut(){
     this.specialProvider.logout().subscribe((res) => {
           if(res["code"] == 10000){
-              this.navCtrl.popToRoot();      
-              this.appCtrl.getRootNav().push(LoginPage);
-
+              this.settingProvider.loginstate = false;
+              console.log(this.tabRef);
+              this.events.publish('toLogin');
+              this.navCtrl.setRoot(LoginPage);
            }else{
               this.settingProvider.presentAlert(res["msg"],'');
            }

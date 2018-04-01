@@ -1,16 +1,19 @@
 page-farmer {
 	ion-label[fixed] {
     -webkit-box-flex: 0;
-    width: 90px;
-    min-width: 90px;
+    width: 100px;
+    min-width: 100px;
     max-width: 200px;
-    flex: 0 0 90px;
+    flex: 0 0 100px;
 	}
 	.item,.ion-row{
 		margin-top: 1rem;
     	padding-left: 1rem;
     	padding-right: 1rem;
     	font-size:1.6rem;
+	}
+	.item input ,.item select ,.item textarea,.item .multi-picker-text,.item .datetime-text,.item .select-text{
+		color:#524f4f;
 	}
 	.ion-title{
 		margin-top:0.5rem;

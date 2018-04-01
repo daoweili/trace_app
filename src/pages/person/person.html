@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content  (ionScroll)="scrollEvent($event)">
-  <ion-list class="ionlist">
+  <ion-list class="ionlist" *ngIf="this.settingProvider.user">
     <div ion-item class="personinfo" style="border-top:0px;">
       <h2>手机号码：{{this.settingProvider.user.mobile}}</h2>
       <p>行政区域：{{this.settingProvider.user.area.name}}</p>
@@ -32,17 +32,22 @@
       <p>{{this.settingProvider.user.cardId}}</p>
     </button>
 
-    <button ion-item (click)="doChgEmail()">
+    <!-- <button ion-item (click)="doChgEmail()">
       <text-avatar text="E" color="rgb(255, 236, 77)" item-left></text-avatar>
       <h2>邮箱地址</h2>
       <p>{{this.settingProvider.user.email}}</p>
-    </button>
+    </button> -->
 
     <button ion-item (click)="doChgPassword()">
       <text-avatar text="R" color="rgb(140, 77, 255)" item-left></text-avatar>
       <h2>修改密码</h2>
     </button>
 
+    <button ion-item (click)="doAbout()">
+      <text-avatar text="A" color="rgb(255, 236, 77)" item-left></text-avatar>
+      <h2>关于我们</h2>
+      <p></p>
+    </button>
 
     <button ion-item item-end (click)="doOut()">
       <text-avatar text="Q" color="rgb(162, 255, 77)" item-left></text-avatar>

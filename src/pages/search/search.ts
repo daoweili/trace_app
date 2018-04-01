@@ -56,6 +56,8 @@ export class SearchPage {
       console.log("搜索类型",this.navParams.data.searchType);
       this.settingProvider.keyword = item.name;
       this.navCtrl.push(LivestockPage,{item:item,type:"farmerSearch"});
+    }else if(this.navParams.data.searchType=="homeSearch"){
+      this.showLivestock(item);
     }
  }
 
@@ -147,9 +149,4 @@ doSearch() {
   //     refresher.complete();
   //   }, 2000);
   // }
-
-  /*自定义返回键*/
-  goBack(){
-    this.navCtrl.pop();  // remember to put this to add the back button behavior
-  }
 }

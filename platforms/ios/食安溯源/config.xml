@@ -35,6 +35,9 @@
     <feature name="CDVWKWebViewEngine">
         <param name="ios-package" value="CDVWKWebViewEngine" />
     </feature>
+    <feature name="NetworkStatus">
+        <param name="ios-package" value="CDVConnection" />
+    </feature>
     <feature name="SplashScreen">
         <param name="ios-package" value="CDVSplashScreen" />
         <param name="onload" value="true" />
@@ -62,6 +65,7 @@
     <allow-navigation href="http://192.168.1.112:8101" />
     <allow-navigation href="http://192.168.1.112:8100" />
     <allow-navigation href="http://192.168.31.186:8100" />
+    <allow-navigation href="http://192.168.1.114:8100" />
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />

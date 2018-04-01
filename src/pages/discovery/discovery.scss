@@ -1,12 +1,12 @@
 page-discovery {
 
-	ion-label[fixed] {
-    -webkit-box-flex: 0;
-    width: 80px;
-    min-width: 80px;
-    max-width: 200px;
-    flex: 0 0 80px;
-	}
+ion-label[fixed] {
+	-webkit-box-flex: 0;
+	width: 100px;
+	min-width: 100px;
+	max-width: 200px;
+	flex: 0 0 100px;
+}
 .ionlist{
 		margin-top:20px;
 	}
@@ -19,5 +19,13 @@ page-discovery {
 	}
 	.bar-button-md{
     font-size: 2.4rem;
-	}
+}
+
+.bar-home-on {
+    background: url(images/bar-home.png) no-repeat center top
+}
+
+.bar-home-off {
+    background: url(images/bar-home-off.png) no-repeat center top
+}
 }

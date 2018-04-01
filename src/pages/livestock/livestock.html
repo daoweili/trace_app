@@ -19,17 +19,16 @@
 
 
 
-<ion-content padding>
+<ion-content>
     <ion-list>
 
-    <ion-item class="item">
+    <ion-item class="item" style="border-top:0px;">
       <ion-label fixed> * 牲畜编号</ion-label>
       <ion-input type="text" required placeholder="请输入牲畜编号" [(ngModel)]="this.settingProvider.ltock.code" readonly="true"  ></ion-input>
     </ion-item>
     <ion-item class="item">
       <ion-label fixed> * 农户</ion-label>
-
-      <ion-input type="text" (ionFocus)="doSearch()" readonly="true" required placeholder="按农户名称或者4位身份证尾数搜索" [(ngModel)]="this.settingProvider.ltock.farmer.name"></ion-input>
+      <ion-input type="text" (ionFocus)="doSearch()" readonly="true" required placeholder="按农户名称或者4位身份证尾数搜索" [(ngModel)]="this.settingProvider.farmername"></ion-input>
     </ion-item>
     <ion-item class="item">
       <ion-label fixed> * 行政区域</ion-label>
@@ -46,14 +45,14 @@
 
     <ion-item class="item">
       <ion-label fixed> * 性别</ion-label>
-      <ion-select [(ngModel)]="this.settingProvider.ltock.sex" okText="确定" cancelText="取消">
+      <ion-select interface="action-sheet" [(ngModel)]="this.settingProvider.ltock.sex" okText="确定" cancelText="取消">
       <ion-option value="1">公</ion-option>
       <ion-option value="2">母</ion-option>
     </ion-select>
     </ion-item>
 
     <ion-item class="item">
-      <ion-label fixed>防疫状况</ion-label>
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;防疫状况</ion-label>
       <ion-select  multiple="true"  [(ngModel)]="this.settingProvider.ltock.epidemicIds"  okText="确定" cancelText="取消">
 	    <ion-option *ngFor="let item of this.settingProvider.epidemicPrevention" value="{{item.id}}">{{item.name}}</ion-option>
 	    
@@ -62,7 +61,7 @@
 
     <ion-item class="item">
       <ion-label fixed> * 健康状态</ion-label>
-      <ion-select [(ngModel)]="this.settingProvider.ltock.healthy" okText="确定" cancelText="取消">
+      <ion-select interface="action-sheet" [(ngModel)]="this.settingProvider.ltock.healthy" okText="确定" cancelText="取消">
 	    <ion-option value="0">良好</ion-option>
 	    <ion-option value="1">合格</ion-option>
 	    <ion-option value="2">不合格</ion-option>
@@ -71,7 +70,7 @@
 
     <ion-item class="item">
       <ion-label fixed> * 种类</ion-label>
-      <ion-select [(ngModel)]="this.settingProvider.ltock.type" okText="确定" cancelText="取消">
+      <ion-select interface="action-sheet"  [(ngModel)]="this.settingProvider.ltock.type" okText="确定" cancelText="取消">
 	    <ion-option value="1">猪</ion-option>
 	    <ion-option value="2">牛</ion-option>
 	    <ion-option value="3">羊</ion-option>
@@ -80,8 +79,8 @@
 
 
     <ion-item class="item">
-      <ion-label fixed>  意外死亡</ion-label>
-      <ion-select name="accidentDead" [(ngModel)]="this.settingProvider.ltock.accidentDead" okText="确定" cancelText="取消">
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;意外死亡</ion-label>
+      <ion-select interface="action-sheet"  name="accidentDead" [(ngModel)]="this.settingProvider.ltock.accidentDead" okText="确定" cancelText="取消">
 	    <ion-option value="1">是</ion-option>
 	    <ion-option value="">否</ion-option>
 	  </ion-select>
@@ -89,55 +88,57 @@
 
 
 
-    <ion-item class="item">
-      <ion-label fixed>  投保情况</ion-label>
-      <ion-select [(ngModel)]="this.settingProvider.ltock.insureState" okText="确定" cancelText="取消">
+    <ion-item class="item" >
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;投保情况</ion-label>
+      <ion-select interface="action-sheet"  [(ngModel)]="this.settingProvider.ltock.insureState" okText="确定" cancelText="取消">
       <ion-option value="1">投保</ion-option>
       <ion-option value="2">未投保</ion-option>
-    </ion-select>
+      </ion-select>
     </ion-item>
 
-
-    <ion-item class="item"  *ngIf="this.settingProvider.ltock.insureState=='1'">
-      <ion-label fixed>  投保编号</ion-label>
-      <ion-input type="tel" placeholder="请输入投保编号" readonly="true"  (ionFocus)="doScan()" [(ngModel)]="this.settingProvider.ltock.insureId" ></ion-input>
-      <ion-icon item-end (click)="doScan()" name="qr-scanner"></ion-icon>
+    <ion-item class="item"   *ngIf="this.settingProvider.ltock.insureState=='1'">
+        <ion-label fixed item-start>&nbsp;&nbsp;&nbsp;投保编号</ion-label>
+        <ion-input type="tel" placeholder="请输入投保编号" readonly="true" [(ngModel)]="this.settingProvider.ltock.insureId" ></ion-input>
+        <ion-icon item-end (click)="doScan()" name="qr-scanner"></ion-icon>
     </ion-item>
 
 
 
 
     <ion-item class="item">
-      <ion-label fixed>  宰现地点</ion-label>
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;宰现地点</ion-label>
           <ion-textarea name="slaughterAddress" placeholder="请输入宰现地点" [(ngModel)]="this.settingProvider.ltock.slaughterAddress"  placeholder=""></ion-textarea>
     </ion-item>
 
     <ion-item class="item">
-      <ion-label fixed> 宰现情况</ion-label>
-          <ion-textarea name="slaughterRemark" placeholder="请输入宰现情况" [(ngModel)]="this.settingProvider.ltock.slaughterRemark" placeholder=""></ion-textarea>
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;宰现情况</ion-label>
+      <ion-select interface="action-sheet"  [(ngModel)]="this.settingProvider.ltock.slaughterRemark" okText="确定" cancelText="取消">
+      <ion-option value="是">是</ion-option>
+      <ion-option value="否">否</ion-option>
+      </ion-select>
     </ion-item>
 
     <ion-item class="item">
-      <ion-label fixed>  买卖流向</ion-label>
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;买卖流向</ion-label>
           <ion-textarea name="saleFlow" placeholder="请输入买卖流向" [(ngModel)]="this.settingProvider.ltock.saleFlow" placeholder=""></ion-textarea>
     </ion-item>
 
 
     <ion-item class="item">
-      <ion-label fixed>  防疫类型</ion-label>
-          <ion-textarea style="height:10rem;" placeholder="请输入防疫类型" name="epidemicType" [(ngModel)]="this.settingProvider.ltock.epidemicType"  placeholder="逗号隔开"></ion-textarea>
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;防疫类型</ion-label>
+          <ion-textarea style="height:10rem;" placeholder="请输入防疫类型" name="epidemicType" [(ngModel)]="this.settingProvider.ltock.epidemicType"  placeholder="请输入防疫类型,逗号隔开"></ion-textarea>
     </ion-item>
 
 
 
     <ion-item class="item">
-      <ion-label fixed>  防疫供应商</ion-label>
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;防疫供应商</ion-label>
           <ion-textarea style="height:10rem;"  name="epidemicProduct" [(ngModel)]="this.settingProvider.ltock.epidemicProduct"  placeholder="请输入防疫供应商，以逗号隔开"></ion-textarea>
     </ion-item>
 
 
     <ion-item class="item">
-      <ion-label fixed>  生产批次</ion-label>
+      <ion-label fixed>&nbsp;&nbsp;&nbsp;生产批次</ion-label>
           <ion-textarea style="height:10rem;" name="epidemicBatch" [(ngModel)]="this.settingProvider.ltock.epidemicBatch"  placeholder="请输入生产批次，以逗号隔开"></ion-textarea>
     </ion-item>
 

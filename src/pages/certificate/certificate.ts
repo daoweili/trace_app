@@ -50,8 +50,4 @@ export class CertificatePage {
     }
   }
 
-  /*自定义返回键*/
-  goBack(){
-    this.navCtrl.pop();  // remember to put this to add the back button behavior
-  }
 }

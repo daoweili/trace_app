@@ -4,6 +4,7 @@ import { BackButtonService } from '../../services/backButton';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SearchPage } from '../search/search';
+import { LoginPage } from '../login/login';
 import { Storage } from '@ionic/storage';
 import { SettingProvider } from "../../providers/setting/setting";
 
@@ -19,7 +20,13 @@ export class HomePage {
     this.statusBar.overlaysWebView(false);
     this.statusBar.show();
     this.statusBar.backgroundColorByHexString('#333');
-    if((this.settingProvider.user as any).areaId > 0 ){
+  }
+
+  ionViewDidEnter(){
+    // console.log(this.settingProvider);
+    if( this.settingProvider != null ){
+      if ( this.settingProvider.user != null ){
+        if ( (this.settingProvider.user as any).areaId > 0 ){
         this.settingProvider.getEpidemicPrevention((this.settingProvider.user as any).areaId).subscribe((res) => {
           if(res["code"] == 10000){
                this.settingProvider.epidemicPrevention = res["data"];
@@ -27,9 +34,10 @@ export class HomePage {
         }, (err) => {
          console.log(err);
         });
+       }
+      }
     }
   }
-
   /*搜索*/
   doSearch(keyword: HTMLInputElement){
   	if(keyword.value.length>0){

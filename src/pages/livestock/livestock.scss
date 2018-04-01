@@ -1,21 +1,25 @@
 page-livestock {
 	ion-label[fixed] {
     -webkit-box-flex: 0;
-    width: 80px;
-    min-width: 80px;
+    width: 100px;
+    min-width: 100px;
     max-width: 200px;
-    flex: 0 0 80px;
+    flex: 0 0 100px;
 	}
 	.item{
-		margin-top: 1rem;
-    	padding-left: 1rem;
-    	padding-right: 1rem;
+		margin-top: 0.5em;
+	    padding-left: 1rem;
+	    padding-right: 1rem;
+	    margin-bottom: 0.5em;
+	}
+	.item input ,.item select ,.item textarea,.item .multi-picker-text,.item .datetime-text,.item .select-text{
+		color:#524f4f;
 	}
 	.ion-title{
-		margin-top:0.5rem;
+		margin-top:0.5em;
 	}
 	.blank{
-		margin-bottom:3rem;
+		margin-bottom:3em;
 	}
 
 	.ng-valid[required], .ng-valid.required  {
@@ -36,6 +40,12 @@ page-livestock {
 	}
 	.list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child {
 	  border-bottom-color: #cccccc;
+	  -webkit-box-shadow: inset 0 0px 0 0 #cccccc;
+	  box-shadow: inset 0 0px 0 0 #cccccc;
+	}
+
+	.item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner{
+	border-bottom-color: #cccccc;
 	  -webkit-box-shadow: inset 0 0px 0 0 #cccccc;
 	  box-shadow: inset 0 0px 0 0 #cccccc;
 	}

@@ -22,7 +22,6 @@ export class FarmerPage {
   @ViewChild('myTabs') tabRef: Tabs;
 
   toPage:boolean=true;
-  infoType:boolean=false;
   /*农户对象*/
   farmer:any = {
     name:'',
@@ -49,11 +48,9 @@ export class FarmerPage {
       });
       //首页搜索后查看农户
       if( navParams.data.item != null && navParams.data.type =="farmerCat"){
-        console.log("点击了",navParams.data.item,navParams.data.info);
         this.farmer = navParams.data.item;
         if( navParams.data.info =="livestock" ) 
         {
-          this.infoType = true;
           this.getStats(this.farmer.id);
 
         }
@@ -61,7 +58,7 @@ export class FarmerPage {
       }else{
         this.toPage = true;
       }
-
+      /*百度地图*/
       if( navParams.data.address != null && navParams.data.type =="baidu"){
         this.farmer.farmAddress = navParams.data.address;
       }
@@ -122,9 +119,5 @@ export class FarmerPage {
           });
       }
 
-  }
-/*自定义返回键*/
-  goBack(){
-    this.navCtrl.pop();  // remember to put this to add the back button behavior
   }
 }
